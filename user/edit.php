@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $response["pesan"] = "Edit Data Berhasil";
             } else {
                 $response["kode"] = 500;
-                $response["pesan"] = "Gagal Simpan Data";
+                $response["pesan"] = "Gagal Edit Data";
             }
         } else {
             $response['kode'] = 400;
