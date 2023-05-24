@@ -13,6 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_GET['username'];
             $email = $_POST['email'];
 
+            $cekName = 0;
+            $cekPhoto = 0;
+            $cekPassword = 0;
+
             if (isset($_POST['name'])) {
                 $name = $_POST['name'];
                 $query = "UPDATE user SET name = '$name' WHERE username = '$username' AND email = '$email'";
