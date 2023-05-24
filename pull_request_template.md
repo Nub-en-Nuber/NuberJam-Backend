@@ -10,6 +10,7 @@
 - [ ] refactor: A code change that neither fixes a bug nor adds a feature
 - [ ] test: Anything related to unit / integration testing
 - [ ] revert: Revert a commit
+- [ ] ....
 
 ## Type of Scope
 - [ ] album: Changes that affect user packages
