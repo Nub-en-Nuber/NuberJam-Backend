@@ -2,14 +2,15 @@
 
 include "../database.php";
 $database = new Database();
+$constant = new Constants();
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
-    if ($response["kode"] == 200) {
-        if (isset($_GET['username'])) {
-            $username = $_GET['username'];
-            $query = "SELECT * FROM user WHERE username = '$username'";
+    if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
+        if (isset($_GET['userId'])) {
+            $userId = $_GET['userId'];
+            $query = "SELECT * FROM user WHERE id = '$userId'";
 
             $execute = mysqli_query($database->connection, $query);
             $cek = mysqli_affected_rows($database->connection);
@@ -27,17 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     array_push($response["data"], $data);
                 }
             } else {
-                $response["kode"] = 500;
-                $response["pesan"] = "Data Tidak Tersedia";
+                $response["status"] = $constant->RESPONSE_STATUS["not_found"];
+                $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];
             }
         } else {
-            $response['kode'] = 400;
-            $response['pesan'] = "Username diperlukan untuk menghapus";
+            $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["userid_needed"];
         }
     }
 } else {
-    $response['kode'] = 400;
-    $response['pesan'] = "Request method salah";
+    $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+    $response['message'] = $constant->RESPONSE_MESSAGES["wrong_request_method"];
 }
 
 echo json_encode($response);

@@ -2,35 +2,36 @@
 
 include '../database.php';
 $database = new Database();
+$constant = new Constants();
 
 $response = array();
 
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $response = $database->checkToken();
 
-    if ($response["kode"] == 200) {
-        if (isset($_GET['username'])) {
-            $username = $_GET['username'];
+    if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
+        if (isset($_GET['userId'])) {
+            $userId = $_GET['userId'];
 
-            $query = "DELETE FROM user WHERE username = '$username'";
+            $query = "DELETE FROM user WHERE id = '$userId'";
             $execute = mysqli_query($database->connection, $query);
             $cek = mysqli_affected_rows($database->connection);
 
             if ($cek > 0) {
-                $response["kode"] = 200;
-                $response["pesan"] = "Hapus Data Berhasil";
+                $response["status"] = $constant->RESPONSE_STATUS["success"];
+                $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
             } else {
-                $response["kode"] = 500;
-                $response["pesan"] = "Gagal Hapus Data";
+                $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
+                $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
             }
         } else {
-            $response['kode'] = 400;
-            $response['pesan'] = "Username diperlukan untuk menghapus";
+            $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["userid_needed"];
         }
     }
 } else {
-    $response['kode'] = 400;
-    $response['pesan'] = "Request method salah";
+    $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+    $response['message'] = $constant->RESPONSE_MESSAGES["wrong_request_method"];
 }
 
 echo json_encode($response);
