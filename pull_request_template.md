@@ -18,3 +18,4 @@
 - [ ] favorite: Changes that affect favorite packages
 - [ ] playlist: Changes that affect playlist packages
 - [ ] playlist-detail: Changes that affect playlist-detail packages
+- [ ] general: all stuff except above
