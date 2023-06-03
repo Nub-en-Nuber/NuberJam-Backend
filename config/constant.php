@@ -1,6 +1,13 @@
 <?php
-class Constants {
-    var $BASE_URL = "http://localhost/nuberJam";
+class Constants
+{
+    var $host = "localhost";
+    var $user = "root";
+    var $pass = "";
+    var $database = "nuber_jam";
+
+    var $BASE_URL = "http://localhost/nuberjam/api";
+    var $DATABASE_ERROR = "MYSQL database is not connected correctly";
     var $RESPONSE_MESSAGES = array(
         "add_success" => "Successfully added data",
         "available_data" => "Data is available",
