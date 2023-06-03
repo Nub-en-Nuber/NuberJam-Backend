@@ -1,22 +1,22 @@
 <?php
 header("Content-Type:application/json");
-include '../constant.php';
+include 'constant.php';
 
 class Database
 {
-	var $host = "localhost";
-	var $user = "root";
-	var $pass = "";
-	var $database = "nuber_jam";
-
 	var $connection;
 
 	var $constant;
 
 	function __construct()
 	{
-		$this->connection = mysqli_connect($this->host, $this->user, $this->pass, $this->database) or die("Database MYSQL tidak terhubung");
 		$this->constant = new Constants($this);
+		$this->connection = mysqli_connect(
+			$this->constant->host,
+			$this->constant->user,
+			$this->constant->pass,
+			$this->constant->database
+		) or die($this->constant->DATABASE_ERROR);
 	}
 
 	function checkToken()
