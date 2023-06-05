@@ -31,7 +31,7 @@ CREATE TABLE `album` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `artist` varchar(250) NOT NULL,
-  `photo` varchar(250) NOT NULL
+  `photo` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -56,7 +56,7 @@ CREATE TABLE `music` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `duration` int(11) NOT NULL,
-  `filePath` varchar(250) NOT NULL,
+  `filePath` varchar(500) NOT NULL,
   `albumId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -69,7 +69,7 @@ CREATE TABLE `music` (
 CREATE TABLE `playlist` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
-  `photo` varchar(250) NOT NULL,
+  `photo` varchar(500) NOT NULL,
   `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -115,7 +115,7 @@ CREATE TABLE `user` (
   `username` varchar(250) NOT NULL,
   `email` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
-  `photo` varchar(250) NOT NULL
+  `photo` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
