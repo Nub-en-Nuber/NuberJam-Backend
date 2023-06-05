@@ -6,7 +6,9 @@ class Constants
     var $pass = "";
     var $database = "nuber_jam";
 
-    var $BASE_URL = "http://localhost/nuberjam/api";
+    var $BASE_URL = "http://localhost/nuberjam";
+    var $BASE_API_URL = "http://localhost/nuberjam/api";
+    var $BASE_ASSET_URL = "http://localhost/nuberjam/asset";
     var $DATABASE_ERROR = "MYSQL database is not connected correctly";
     var $RESPONSE_MESSAGES = array(
         "add_success" => "Successfully added data",
@@ -20,6 +22,7 @@ class Constants
         "delete_success" => "Successfully deleted data",
         "delete_failed" => "Failed to delete data",
         "userid_needed" => "User ID is required to process data",
+        "albumid_needed" => "Album ID is required to process data",
         "edit_success" => "Successfully edited data",
         "edit_failed" => "Failed to edit data",
     );
