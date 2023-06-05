@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cekPassword = false;
 
             if (isset($_POST['name'])) {
-                echo "masukName";
                 $name = $_POST['name'];
                 $query = "UPDATE user SET name = '$name' WHERE id = '$userId'";
                 if (mysqli_query($database->connection, $query)) $cekName = true;
