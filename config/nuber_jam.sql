@@ -56,7 +56,7 @@ CREATE TABLE `music` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `duration` int(11) NOT NULL,
-  `filePath` varchar(500) NOT NULL,
+  `musicFile` varchar(500) NOT NULL,
   `albumId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
