@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2023 at 04:35 PM
+-- Generation Time: Jun 06, 2023 at 04:39 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.0.23
 
@@ -28,11 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `album` (
-  `id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  `artist` varchar(250) NOT NULL,
-  `photo` varchar(500) NOT NULL
+  `albumId` int(11) NOT NULL,
+  `albumName` varchar(250) NOT NULL,
+  `albumArtist` varchar(250) NOT NULL,
+  `albumPhoto` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `album`
+--
+
+INSERT INTO `album` (`albumId`, `albumName`, `albumArtist`, `albumPhoto`) VALUES
+(1, 'Map of The Soul', 'BTS', 'localhost'),
+(2, 'Album Coba 2', 'Muhammad Coba 2', 'http://localhost/nuberjam/asset/images/album/default-album.png');
 
 -- --------------------------------------------------------
 
@@ -41,7 +49,7 @@ CREATE TABLE `album` (
 --
 
 CREATE TABLE `favorite` (
-  `id` int(11) NOT NULL,
+  `favoriteId` int(11) NOT NULL,
   `musicId` int(11) NOT NULL,
   `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -53,12 +61,20 @@ CREATE TABLE `favorite` (
 --
 
 CREATE TABLE `music` (
-  `id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  `duration` int(11) NOT NULL,
-  `filePath` varchar(500) NOT NULL,
+  `musicId` int(11) NOT NULL,
+  `musicName` varchar(250) NOT NULL,
+  `musicDuration` int(11) NOT NULL,
+  `musicFile` varchar(500) NOT NULL,
   `albumId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `music`
+--
+
+INSERT INTO `music` (`musicId`, `musicName`, `musicDuration`, `musicFile`, `albumId`) VALUES
+(1, 'ON', 246, 'localhost', 1),
+(2, 'Jamais Vu', 227, 'localhost', 1);
 
 -- --------------------------------------------------------
 
@@ -67,11 +83,21 @@ CREATE TABLE `music` (
 --
 
 CREATE TABLE `playlist` (
-  `id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  `photo` varchar(500) NOT NULL,
+  `playlistId` int(11) NOT NULL,
+  `playlistName` varchar(250) NOT NULL,
+  `playlistPhoto` varchar(500) NOT NULL,
   `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `playlist`
+--
+
+INSERT INTO `playlist` (`playlistId`, `playlistName`, `playlistPhoto`, `userId`) VALUES
+(1, 'Lagu-lagu Tidur', 'localhost', 2),
+(2, 'Coldplay - Maroon5', 'localhost', 2),
+(4, 'Lagu Belajar', 'http://localhost/nuberjam/asset/images/playlist/default-playlist.png', 1),
+(6, 'Lagu Main', 'http://localhost/nuberjam/asset/images/playlist/LaguMain-1-00c574a29e4e0223ebb92352d9fae3b3.png', 1);
 
 -- --------------------------------------------------------
 
@@ -80,10 +106,19 @@ CREATE TABLE `playlist` (
 --
 
 CREATE TABLE `playlist_detail` (
-  `id` int(11) NOT NULL,
+  `playlistDetailId` int(11) NOT NULL,
   `playlistId` int(11) NOT NULL,
   `musicId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `playlist_detail`
+--
+
+INSERT INTO `playlist_detail` (`playlistDetailId`, `playlistId`, `musicId`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -110,7 +145,7 @@ INSERT INTO `token` (`id`, `token`) VALUES
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `username` varchar(250) NOT NULL,
   `email` varchar(250) NOT NULL,
@@ -122,8 +157,10 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `username`, `email`, `password`, `photo`) VALUES
-(1, 'RtAgung', 'RTAgung', 'agung@email.com', 'hehe', 'hihi');
+INSERT INTO `user` (`userId`, `name`, `username`, `email`, `password`, `photo`) VALUES
+(1, 'Rama Tri Agung', 'RTAgung', 'agung@email.com', 'hehe', 'hihi'),
+(2, 'Anjar Harimurti', 'args06', 'anjar@gmail.com', 'anjar123', 'http://localhost/nuberJam/asset/images/user/c81e728d9d4c2f636f067f89cc14862c.png'),
+(3, 'Liek Allyandaru', 'all4yandaru', 'daru@email.com', '54321', 'localhost');
 
 --
 -- Indexes for dumped tables
@@ -133,13 +170,13 @@ INSERT INTO `user` (`id`, `name`, `username`, `email`, `password`, `photo`) VALU
 -- Indexes for table `album`
 --
 ALTER TABLE `album`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`albumId`);
 
 --
 -- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`favoriteId`),
   ADD KEY `fk_favorite_musicId` (`musicId`),
   ADD KEY `fk_favorite_userId` (`userId`);
 
@@ -147,21 +184,21 @@ ALTER TABLE `favorite`
 -- Indexes for table `music`
 --
 ALTER TABLE `music`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`musicId`),
   ADD KEY `fk_music_albumId` (`albumId`);
 
 --
 -- Indexes for table `playlist`
 --
 ALTER TABLE `playlist`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`playlistId`),
   ADD KEY `fk_playlist_userId` (`userId`);
 
 --
 -- Indexes for table `playlist_detail`
 --
 ALTER TABLE `playlist_detail`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`playlistDetailId`),
   ADD KEY `fk_playlist_detail_playlistId` (`playlistId`),
   ADD KEY `fk_playlist_detail_musicId` (`musicId`);
 
@@ -175,7 +212,7 @@ ALTER TABLE `token`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`userId`),
   ADD UNIQUE KEY `uq_user_username` (`username`),
   ADD UNIQUE KEY `uq_user_email` (`email`);
 
@@ -187,31 +224,31 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `albumId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `favoriteId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `music`
 --
 ALTER TABLE `music`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `musicId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `playlistId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `playlist_detail`
 --
 ALTER TABLE `playlist_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `playlistDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `token`
@@ -223,7 +260,7 @@ ALTER TABLE `token`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -233,27 +270,27 @@ ALTER TABLE `user`
 -- Constraints for table `favorite`
 --
 ALTER TABLE `favorite`
-  ADD CONSTRAINT `fk_favorite_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_favorite_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_favorite_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`musicId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_favorite_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `music`
 --
 ALTER TABLE `music`
-  ADD CONSTRAINT `fk_music_albumId` FOREIGN KEY (`albumId`) REFERENCES `album` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_music_albumId` FOREIGN KEY (`albumId`) REFERENCES `album` (`albumId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `playlist`
 --
 ALTER TABLE `playlist`
-  ADD CONSTRAINT `fk_playlist_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_playlist_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `playlist_detail`
 --
 ALTER TABLE `playlist_detail`
-  ADD CONSTRAINT `fk_playlist_detail_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_playlist_detail_playlistId` FOREIGN KEY (`playlistId`) REFERENCES `playlist` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_playlist_detail_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`musicId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_playlist_detail_playlistId` FOREIGN KEY (`playlistId`) REFERENCES `playlist` (`playlistId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
