@@ -10,10 +10,11 @@ $response = $database->checkToken();
 
 if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        $info['read_user_by_id'] = "http://localhost/nuberJam/user/retrieve.php?username={username}";
-        $info['add_user'] = "http://localhost/nuberJam/user/add.php";
-        $info['edit_user_data'] = "http://localhost/nuberJam/user/edit.php?username={username}";
-        $info['delete_user'] = "http://localhost/nuberJam/user/delete.php?username={username}";
+        $data['add_playlist'] = "http://localhost/nuberjam/api/playlist/add.php";
+        $data['read_all_playlist'] = "http://localhost/nuberjam/api/playlist/retrieve.php";
+        $data['read_playlist_by_id'] = "http://localhost/nuberjam/api/playlist/retrieve.php?playlistId={id}";
+        $data['edit_playlist_data'] = "http://localhost/nuberjam/api/playlist/edit.php?playlistId={id}";
+        $data['delete_playlist_by_id'] = "http://localhost/nuberjam/api/playlist/delete.php?playlistId={id}";
     } else {
         $response["status"] = $constant->RESPONSE_STATUS["unauthorized"];
         $response["message"] = $constant->RESPONSE_MESSAGES['invalid_token'];

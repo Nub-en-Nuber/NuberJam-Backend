@@ -20,14 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $photoName = Utils::convertCamelString("$userId-$name-") . md5(Utils::convertCamelString("$userId-$name")) . ".png";
             $target_file = $target_dir . $photoName;
 
+            $photo = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
             if (isset($_FILES['photo'])) {
                 if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                     $photo = $constant->BASE_ASSET_URL . "/images/playlist/" . $photoName;
-                } else {
-                    $photo = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
                 }
-            } else {
-                $photo = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
             }
 
             $query = "INSERT INTO playlist (name, photo, userId) VALUES ('$name','$photo','$userId')";

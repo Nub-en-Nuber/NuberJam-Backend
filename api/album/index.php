@@ -10,11 +10,12 @@ $response = $database->checkToken();
 
 if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        $data['add_playlist'] = "http://localhost/nuberjam/api/playlist/add.php";
-        $data['read_all_playlist'] = "http://localhost/nuberjam/api/playlist/retrieve.php";
-        $data['read_playlist_by_id'] = "http://localhost/nuberjam/api/playlist/retrieve.php?playlistId={id}";
-        $data['edit_playlist_data'] = "http://localhost/nuberjam/api/playlist/edit.php?playlistId={id}";
-        $data['delete_playlist_by_id'] = "http://localhost/nuberjam/api/playlist/delete.php?playlistId={id}";
+        $data['add_album'] = "http://localhost/nuberjam/api/album/add.php";
+        $data['read_all_album'] = "http://localhost/nuberjam/api/album/retrieve.php";
+        $data['read_album_by_id'] = "http://localhost/nuberjam/api/album/retrieve.php?id={id}";
+        $data['edit_album_data'] = "http://localhost/nuberjam/api/album/edit.php?id={id}";
+        $data['delete_all_album'] = "http://localhost/nuberjam/api/album/delete.php";
+        $data['delete_album_by_id'] = "http://localhost/nuberjam/api/album/delete.php?id={id}";
     } else {
         $response["status"] = $constant->RESPONSE_STATUS["unauthorized"];
         $response["message"] = $constant->RESPONSE_MESSAGES['invalid_token'];
