@@ -19,14 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $check = mysqli_affected_rows($database->connection);
 
         if ($check > 0) {
-            $response["data"] = array();
+            $albumList = array();
             while ($row = mysqli_fetch_object($execute)) {
-                $data["albumId"] = $row->albumId;
-                $data["albumName"] = $row->albumName;
-                $data["albumArtist"] = $row->albumArtist;
-                $data["albumPhoto"] = $row->albumPhoto;
-                array_push($response["data"], $data);
+                $albumData["albumId"] = $row->albumId;
+                $albumData["albumName"] = $row->albumName;
+                $albumData["albumArtist"] = $row->albumArtist;
+                $albumData["albumPhoto"] = $row->albumPhoto;
+                $albumData["music"] = array();
+                array_push($albumList, $albumData);
             }
+            $data["playlist"] = array();
+            $data["album"] = $albumList;
+            $data["user"] = array();
+            $response['data'] = $data;
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["not_found"];
             $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $targetDir = "../../asset/images/album/";
             $timestamp = Utils::getCurrentDate();
-            $albumPhotoName = "album-" . md5(Utils::convertCamelString("$name-$timestamp")) . ".png";
+            $albumPhotoName = "album-" . md5(Utils::convertCamelString("$albumName-$timestamp")) . ".png";
             $targetFile = $targetDir . $albumPhotoName;
             if (move_uploaded_file($_FILES["albumPhoto"]["tmp_name"], $targetFile)) {
                 $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;

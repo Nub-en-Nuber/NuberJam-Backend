@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $query = "UPDATE album SET albumPhoto = '$albumPhoto' WHERE albumId = '$albumId'";
                         if (mysqli_query($database->connection, $query)) $checkPhoto = true;
                     }
-                } 
+                }
             }
 
             if ($checkName || $checkPhoto || $checkArtist) {
