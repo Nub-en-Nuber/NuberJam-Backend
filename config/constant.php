@@ -23,6 +23,7 @@ class Constants
         "delete_failed" => "Failed to delete data",
         "userid_needed" => "User ID is required to process data",
         "albumid_needed" => "Album ID is required to process data",
+        "playlistid_needed" => "Playlist ID is required to process data",
         "edit_success" => "Successfully edited data",
         "edit_failed" => "Failed to edit data",
     );
