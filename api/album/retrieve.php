@@ -8,38 +8,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $query = "SELECT * FROM album WHERE id = '$id'";
-
-            $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
-
-            if ($cek > 0) {
-                $response["data"] = array();
-                while ($row = mysqli_fetch_object($execute)) {
-                    $data["id"] = $row->id;
-                    $data["name"] = $row->name;
-                    $data["artist"] = $row->artist;
-                    $data["photo"] = $row->photo;
-                    array_push($response["data"], $data);
-                }
-            } else {
-                $response["status"] = $constant->RESPONSE_STATUS["not_found"];
-                $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];
-            }
+        if (isset($_GET['albumId'])) {
+            $albumId = $_GET['albumId'];
+            $query = "SELECT * FROM album WHERE albumId = '$albumId'";
         } else {
             $query = "SELECT * FROM album";
+        }
 
-            $execute = mysqli_query($database->connection, $query);
+        $execute = mysqli_query($database->connection, $query);
+        $check = mysqli_affected_rows($database->connection);
+
+        if ($check > 0) {
             $response["data"] = array();
             while ($row = mysqli_fetch_object($execute)) {
-                $data["id"] = $row->id;
-                $data["name"] = $row->name;
-                $data["artist"] = $row->artist;
-                $data["photo"] = $row->photo;
+                $data["albumId"] = $row->albumId;
+                $data["albumName"] = $row->albumName;
+                $data["albumArtist"] = $row->albumArtist;
+                $data["albumPhoto"] = $row->albumPhoto;
                 array_push($response["data"], $data);
             }
+        } else {
+            $response["status"] = $constant->RESPONSE_STATUS["not_found"];
+            $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];
         }
     }
 } else {

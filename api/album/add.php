@@ -17,16 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $albumArtist = $_POST['albumArtist'];
 
             $targetDir = "../../asset/images/album/";
-            // $timestamp = 
-            $albumPhotoName = "album-" . Utils::convertCamelString("$albumArtist-$name-") . md5(Utils::convertCamelString("$albumArtist-$name")) . ".png";
+            $timestamp = Utils::getCurrentDate();
+            $albumPhotoName = "album-" . md5(Utils::convertCamelString("$name-$timestamp")) . ".png";
             $targetFile = $targetDir . $albumPhotoName;
-            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-                $photo = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;
+            if (move_uploaded_file($_FILES["albumPhoto"]["tmp_name"], $targetFile)) {
+                $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;
             } else {
-                $photo = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
+                $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
             }
 
-            $query = "INSERT INTO album (name, albumArtist, photo) VALUES ('$name','$albumArtist','$photo')";
+            $query = "INSERT INTO album (albumName, albumArtist, albumPhoto) VALUES ('$albumName','$albumArtist','$albumPhoto')";
             $execute = mysqli_query($database->connection, $query);
             $cek = mysqli_affected_rows($database->connection);
 
