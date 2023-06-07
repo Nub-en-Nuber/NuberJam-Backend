@@ -14,7 +14,7 @@
 ## Type of Scope
 - [ ] album: Changes that affect user packages
 - [ ] music: Changes that affect music packages
-- [ ] user: Changes that affect user packages
+- [ ] account: Changes that affect account packages
 - [ ] favorite: Changes that affect favorite packages
 - [ ] playlist: Changes that affect playlist packages
 - [ ] playlist-detail: Changes that affect playlist-detail packages
