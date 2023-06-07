@@ -13,17 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         if (!empty($_POST)) {
-            $name = $_POST['name'];
-            $duration = $_POST['duration'];
-            $album_id = $_POST['album_id'];
+            $musicName = $_POST['musicName'];
+            $musicDuration = $_POST['musicDuration'];
+            $albumId = $_POST['albumId'];
 
-            $target_dir = "../../asset/music/";
-            $music_name = Utils::convertCamelString("$album_id-$name-") . md5(Utils::convertCamelString("$album_id-$name")) . ".mp3";
-            $target_file = $target_dir . $music_name;
-            if (move_uploaded_file($_FILES["music_file"]["tmp_name"], $target_file)) {
-                $music_file = $constant->BASE_ASSET_URL . "/music/" . $music_name;
+            $targetDir = "../../asset/music/";
+            $timestamp = Utils::getCurrentDate();
+            $musicName = "music-" . md5(Utils::convertCamelString("$name-$timestamp")) . ".mp3";
+            $targetFile = $targetDir . $musicName;
+            if (move_uploaded_file($_FILES["musicFile"]["tmp_name"], $targetFile)) {
+                $musicFile = $constant->BASE_ASSET_URL . "/music/" . $musicName;
 
-                $query = "INSERT INTO music (name, duration, musicFile, albumId) VALUES ('$name', $duration, '$music_file', $album_id)";
+                $query = "INSERT INTO music (musicName, musicDuration, musicFile, albumId) VALUES ('$musicName', $musicDuration, '$musicFile', $albumId)";
                 $execute = mysqli_query($database->connection, $query);
                 $cek = mysqli_affected_rows($database->connection);
 

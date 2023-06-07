@@ -33,8 +33,7 @@ function search_music()
     $searchQuery = $_GET['q'];
     $query = "SELECT m.id as id, m.name as name, m.duration as duration, m.musicFile as musicFile, " .
         "a.id as albumId, a.name as albumName, a.artist as albumArtist, a.photo as albumPhoto " .
-        "FROM music m LEFT JOIN album a ON m.albumId = a.id WHERE m.name LIKE '%$searchQuery%'";
-
+        "FROM music m LEFT JOIN album a ON m.albumId = a.id WHERE m.name LIKE '%$searchQuery%' OR a.name LIKE '%$searchQuery%'";
     return $query;
 }
 

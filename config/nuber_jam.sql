@@ -34,14 +34,6 @@ CREATE TABLE `album` (
   `albumPhoto` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `album`
---
-
-INSERT INTO `album` (`albumId`, `albumName`, `albumArtist`, `albumPhoto`) VALUES
-(1, 'Map of The Soul', 'BTS', 'localhost'),
-(2, 'Album Coba 2', 'Muhammad Coba 2', 'http://localhost/nuberjam/asset/images/album/default-album.png');
-
 -- --------------------------------------------------------
 
 --
@@ -68,14 +60,6 @@ CREATE TABLE `music` (
   `albumId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `music`
---
-
-INSERT INTO `music` (`musicId`, `musicName`, `musicDuration`, `musicFile`, `albumId`) VALUES
-(1, 'ON', 246, 'localhost', 1),
-(2, 'Jamais Vu', 227, 'localhost', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -89,16 +73,6 @@ CREATE TABLE `playlist` (
   `userId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `playlist`
---
-
-INSERT INTO `playlist` (`playlistId`, `playlistName`, `playlistPhoto`, `userId`) VALUES
-(1, 'Lagu-lagu Tidur', 'localhost', 2),
-(2, 'Coldplay - Maroon5', 'localhost', 2),
-(4, 'Lagu Belajar', 'http://localhost/nuberjam/asset/images/playlist/default-playlist.png', 1),
-(6, 'Lagu Main', 'http://localhost/nuberjam/asset/images/playlist/LaguMain-1-00c574a29e4e0223ebb92352d9fae3b3.png', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -111,15 +85,6 @@ CREATE TABLE `playlist_detail` (
   `musicId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `playlist_detail`
---
-
-INSERT INTO `playlist_detail` (`playlistDetailId`, `playlistId`, `musicId`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 4, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -130,13 +95,6 @@ CREATE TABLE `token` (
   `id` int(11) NOT NULL,
   `token` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `token`
---
-
-INSERT INTO `token` (`id`, `token`) VALUES
-(1, 'RAj6ALw6JEToPg5Rij4nX2bPMwvDB5dP');
 
 -- --------------------------------------------------------
 
@@ -152,19 +110,6 @@ CREATE TABLE `user` (
   `password` varchar(250) NOT NULL,
   `photo` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`userId`, `name`, `username`, `email`, `password`, `photo`) VALUES
-(1, 'Rama Tri Agung', 'RTAgung', 'agung@email.com', 'hehe', 'hihi'),
-(2, 'Anjar Harimurti', 'args06', 'anjar@gmail.com', 'anjar123', 'http://localhost/nuberJam/asset/images/user/c81e728d9d4c2f636f067f89cc14862c.png'),
-(3, 'Liek Allyandaru', 'all4yandaru', 'daru@email.com', '54321', 'localhost');
-
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `album`

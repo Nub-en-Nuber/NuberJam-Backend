@@ -20,4 +20,12 @@ class Utils
         $string = preg_replace('/\s+/', '', $string);
         return $string;
     }
+
+    public static function getCurrentDate($format = ""){
+        if ($format = "") {
+            return time();
+        } else {
+            return date($format, time());
+        }
+    }
 }
