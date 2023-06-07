@@ -10,12 +10,11 @@ $response = $database->checkToken();
 
 if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        $data['add_album'] = "http://localhost/nuberjam/api/album/add.php";
-        $data['read_all_album'] = "http://localhost/nuberjam/api/album/retrieve.php";
-        $data['read_album_by_id'] = "http://localhost/nuberjam/api/album/retrieve.php?id={id}";
-        $data['edit_album_data'] = "http://localhost/nuberjam/api/album/edit.php?id={id}";
-        $data['delete_all_album'] = "http://localhost/nuberjam/api/album/delete.php";
-        $data['delete_album_by_id'] = "http://localhost/nuberjam/api/album/delete.php?id={id}";
+        $data['add_album'] = $constant->BASE_API_URL . "/album/add.php";
+        $data['read_all_album'] = $constant->BASE_API_URL . "/album/retrieve.php";
+        $data['read_detail_album_by_albumId_and_userId'] = $constant->BASE_API_URL . "/album/retrieve.php?albumId={albumId}&userId={userId}";
+        $data['update_album_by_albumId'] = $constant->BASE_API_URL . "/album/edit.php?albumId={albumId}";
+        $data['delete_album_by_albumId'] = $constant->BASE_API_URL . "/album/delete.php?albumId={albumId}";
     } else {
         $response["status"] = $constant->RESPONSE_STATUS["unauthorized"];
         $response["message"] = $constant->RESPONSE_MESSAGES['invalid_token'];

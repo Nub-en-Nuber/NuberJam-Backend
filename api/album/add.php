@@ -13,19 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         if (!empty($_POST)) {
-            $name = $_POST['name'];
-            $artist = $_POST['artist'];
+            $albumName = $_POST['albumName'];
+            $albumArtist = $_POST['albumArtist'];
 
-            $target_dir = "../../asset/images/album/";
-            $photoName = Utils::convertCamelString("$artist-$name-") . md5(Utils::convertCamelString("$artist-$name")) . ".png";
-            $target_file = $target_dir . $photoName;
-            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                $photo = $constant->BASE_ASSET_URL . "/images/album/" . $photoName;
+            $targetDir = "../../asset/images/album/";
+            // $timestamp = 
+            $albumPhotoName = "album-" . Utils::convertCamelString("$albumArtist-$name-") . md5(Utils::convertCamelString("$albumArtist-$name")) . ".png";
+            $targetFile = $targetDir . $albumPhotoName;
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                $photo = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;
             } else {
                 $photo = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
             }
 
-            $query = "INSERT INTO album (name, artist, photo) VALUES ('$name','$artist','$photo')";
+            $query = "INSERT INTO album (name, albumArtist, photo) VALUES ('$name','$albumArtist','$photo')";
             $execute = mysqli_query($database->connection, $query);
             $cek = mysqli_affected_rows($database->connection);
 
