@@ -18,4 +18,5 @@
 - [ ] favorite: Changes that affect favorite packages
 - [ ] playlist: Changes that affect playlist packages
 - [ ] playlist-detail: Changes that affect playlist-detail packages
+- [ ] album-artist: Changes that affect album-artist packages
 - [ ] general: all stuff except above
