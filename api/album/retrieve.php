@@ -4,6 +4,33 @@ include '../../config/database.php';
 $database = new Database();
 $constant = new Constants();
 
+function getArtistList($database, $albumId)
+{
+    $artistList = array();
+    $queryArtist = "SELECT * FROM album_artist LEFT JOIN account ON account.accountId = album_artist.accountId WHERE albumId = '$albumId'";
+    $executeArtist = mysqli_query($database->connection, $queryArtist);
+    while ($rowArtist = mysqli_fetch_object($executeArtist)) {
+        $artistData["accountId"] = $rowArtist->accountId;
+        $artistData["accountName"] = $rowArtist->accountName;
+        array_push($artistList, $artistData);
+    }
+    return $artistList;
+}
+
+function getAlbumList($database, $execute)
+{
+    $albumList = array();
+    while ($row = mysqli_fetch_object($execute)) {
+        $albumData["albumId"] = $row->albumId;
+        $albumData["albumName"] = $row->albumName;
+        $albumData["albumArtist"] = getArtistList($database, $row->albumId);
+        $albumData["albumPhoto"] = $row->albumPhoto;
+        $albumData["music"] = array();
+        array_push($albumList, $albumData);
+    }
+    return $albumList;
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
@@ -19,17 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $check = mysqli_affected_rows($database->connection);
 
         if ($check > 0) {
-            $albumList = array();
-            while ($row = mysqli_fetch_object($execute)) {
-                $albumData["albumId"] = $row->albumId;
-                $albumData["albumName"] = $row->albumName;
-                $albumData["albumArtist"] = $row->albumArtist;
-                $albumData["albumPhoto"] = $row->albumPhoto;
-                $albumData["music"] = array();
-                array_push($albumList, $albumData);
-            }
             $data["playlist"] = array();
-            $data["album"] = $albumList;
+            $data["album"] = getAlbumList($database, $execute);
             $data["user"] = array();
             $response['data'] = $data;
         } else {

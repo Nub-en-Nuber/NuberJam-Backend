@@ -24,10 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (mysqli_query($database->connection, $query)) $checkName = true;
             }
 
-            if (isset($_POST['albumArtist'])) {
-                $albumArtist = $_POST['albumArtist'];
-                $query = "UPDATE album SET albumArtist = '$albumArtist' WHERE albumId = '$albumId'";
-                if (mysqli_query($database->connection, $query)) $checkArtist = true;
+            if (isset($_POST['accountIds'])) {
+                $accountIds = $_POST['accountIds'];
+                $query = "DELETE FROM album_artist WHERE albumId = '$albumId'";
+                $execute = mysqli_query($database->connection, $query);
+                foreach ($accountIds as $index => $accountId) {
+                    $query = "INSERT INTO album_artist (albumId, accountId) VALUES ('$albumId', '$accountId')";
+                    if (mysqli_query($database->connection, $query)) $checkArtist = true;
+                }
             }
 
             if (isset($_FILES['albumPhoto'])) {
