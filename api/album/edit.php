@@ -11,56 +11,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
+        if (isset($_GET['albumId'])) {
+            $albumId = $_GET['albumId'];
 
-            $cekName = false;
-            $cekPhoto = false;
-            $cekPassword = false;
+            $checkName = false;
+            $checkPhoto = false;
+            $checkArtist = false;
 
-            if (isset($_POST['name'])) {
-                $name = $_POST['name'];
-                $query = "UPDATE album SET name = '$name' WHERE id = '$id'";
-                if (mysqli_query($database->connection, $query)) $cekName = true;
+            if (isset($_POST['albumName'])) {
+                $albumName = $_POST['albumName'];
+                $query = "UPDATE album SET albumName = '$albumName' WHERE albumId = '$albumId'";
+                if (mysqli_query($database->connection, $query)) $checkName = true;
             }
 
-            if (isset($_POST['artist'])) {
-                $artist = $_POST['artist'];
-                $query = "UPDATE album SET artist = '$artist' WHERE id = '$id'";
-                if (mysqli_query($database->connection, $query)) $cekPhoto = true;
-            }
-
-            if (isset($_FILES['photo'])) {
-                $querySelect = "SELECT * FROM album WHERE id = '$id'";
-                $executeSelect = mysqli_query($database->connection, $querySelect);
-                $cek = mysqli_affected_rows($database->connection);
-                if ($cek > 0) {
-                    $photoName = null;
-                    while ($row = mysqli_fetch_object($executeSelect)) {
-                        $photoPath = $row->photo;
-                        $photo = explode("/", $photoPath);
-                        $photoName = end($photo);
-                        if ($photoName == "default-album.png") {
-                            $name = $row->name;
-                            $artist = $row->artist;
-                            $photoName = Utils::convertCamelString("$artist-$name-") . md5(Utils::convertCamelString("$artist-$name")) . ".png";
-                        }
-                    }
-                    $target_dir = "../../asset/images/album/";
-                    $target_file = $target_dir . $photoName;
-                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                        $photo = $constant->BASE_ASSET_URL . "/images/album/" . $photoName;
-                    } else {
-                        $photo = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
-                    }
-                    $query = "UPDATE album SET photo = '$photo' WHERE id = '$id'";
-                    if (mysqli_query($database->connection, $query)) $cekPhoto = true;
-                } else {
-                    $cekPhoto = false;
+            if (isset($_POST['accountIds'])) {
+                $accountIds = $_POST['accountIds'];
+                $query = "DELETE FROM album_artist WHERE albumId = '$albumId'";
+                $execute = mysqli_query($database->connection, $query);
+                foreach ($accountIds as $index => $accountId) {
+                    $query = "INSERT INTO album_artist (albumId, accountId) VALUES ('$albumId', '$accountId')";
+                    if (mysqli_query($database->connection, $query)) $checkArtist = true;
                 }
             }
 
-            if ($cekName || $cekPhoto || $cekPassword) {
+            if (isset($_FILES['albumPhoto'])) {
+                $querySelect = "SELECT * FROM album WHERE albumId = '$albumId'";
+                $executeSelect = mysqli_query($database->connection, $querySelect);
+                $check = mysqli_affected_rows($database->connection);
+                if ($check > 0) {
+                    $albumPhotoName = null;
+                    $targetDir = "../../asset/images/album/";
+
+                    while ($row = mysqli_fetch_object($executeSelect)) {
+                        $albumPhotoPath = $row->albumPhoto;
+                        $albumPhoto = explode("/", $albumPhotoPath);
+                        $albumPhotoName = end($albumPhoto);
+                        if ($albumPhotoName != "default-album.png") {
+                            Utils::deleteFile($targetDir . $albumPhotoName);
+                        }
+                        $albumName = $row->albumName;
+                        $timestamp = Utils::getCurrentDate();
+                        $albumPhotoName = "album-" . md5(Utils::convertCamelString("$albumName-$timestamp")) . ".png";
+                    }
+
+                    $targetFile = $targetDir . $albumPhotoName;
+                    if (move_uploaded_file($_FILES["albumPhoto"]["tmp_name"], $targetFile)) {
+                        $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;
+                        $query = "UPDATE album SET albumPhoto = '$albumPhoto' WHERE albumId = '$albumId'";
+                        if (mysqli_query($database->connection, $query)) $checkPhoto = true;
+                    }
+                }
+            }
+
+            if ($checkName || $checkPhoto || $checkArtist) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["edit_success"];
             } else {

@@ -21,7 +21,8 @@ class Utils
         return $string;
     }
 
-    public static function getCurrentDate($format = ""){
+    public static function getCurrentDate($format = "")
+    {
         if ($format = "") {
             return time();
         } else {
