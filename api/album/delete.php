@@ -12,55 +12,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $querySelect = "SELECT * FROM album WHERE id = '$id'";
+        if (isset($_GET['albumId'])) {
+            $albumId = $_GET['albumId'];
+            $querySelect = "SELECT * FROM album WHERE albumId = '$albumId'";
             $executeSelect = mysqli_query($database->connection, $querySelect);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            if ($check > 0) {
                 while ($row = mysqli_fetch_object($executeSelect)) {
-                    $photoPath = $row->photo;
-                    $photo = explode("/", $photoPath);
-                    $photoName = end($photo);
-                    if ($photoName != "default-album.png") {
-                        Utils::deleteFile("../../asset/images/album/$photoName");
+                    $albumPhotoPath = $row->albumPhoto;
+                    $albumPhoto = explode("/", $albumPhotoPath);
+                    $albumPhotoName = end($albumPhoto);
+                    if ($albumPhotoName != "default-album.png") {
+                        Utils::deleteFile("../../asset/images/album/$albumPhotoName");
                     }
                 }
 
-                $query = "DELETE FROM album WHERE id = '$id'";
+                $query = "DELETE FROM album WHERE albumId = '$albumId'";
                 $execute = mysqli_query($database->connection, $query);
-                $cek = mysqli_affected_rows($database->connection);
+                $check = mysqli_affected_rows($database->connection);
 
-                if ($cek > 0) {
-                    $response["status"] = $constant->RESPONSE_STATUS["success"];
-                    $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
-                } else {
-                    $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
-                    $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
-                }
-            } else {
-                $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
-                $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
-            }
-        } else {
-            $querySelect = "SELECT * FROM album";
-            $executeSelect = mysqli_query($database->connection, $querySelect);
-            $cek = mysqli_affected_rows($database->connection);
-            if ($cek > 0) {
-                while ($row = mysqli_fetch_object($executeSelect)) {
-                    $photoPath = $row->photo;
-                    $photo = explode("/", $photoPath);
-                    $photoName = end($photo);
-                    if ($photoName != "default-album.png") {
-                        Utils::deleteFile("../../asset/images/album/$photoName");
-                    }
-                }
-                $query = "DELETE FROM album";
-                $execute = mysqli_query($database->connection, $query);
-                $cek = mysqli_affected_rows($database->connection);
-
-                if ($cek > 0) {
+                if ($check > 0) {
                     $response["status"] = $constant->RESPONSE_STATUS["success"];
                     $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
                 } else {

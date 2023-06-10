@@ -13,23 +13,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         if (!empty($_POST)) {
-            $name = $_POST['name'];
-            $artist = $_POST['artist'];
+            $albumName = $_POST['albumName'];
+            $accountIds = $_POST['accountIds'];
 
-            $target_dir = "../../asset/images/album/";
-            $photoName = Utils::convertCamelString("$artist-$name-") . md5(Utils::convertCamelString("$artist-$name")) . ".png";
-            $target_file = $target_dir . $photoName;
-            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                $photo = $constant->BASE_ASSET_URL . "/images/album/" . $photoName;
+            $targetDir = "../../asset/images/album/";
+            $timestamp = Utils::getCurrentDate();
+            $albumPhotoName = "album-" . md5(Utils::convertCamelString("$albumName-$timestamp")) . ".png";
+            $targetFile = $targetDir . $albumPhotoName;
+            if (move_uploaded_file($_FILES["albumPhoto"]["tmp_name"], $targetFile)) {
+                $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/" . $albumPhotoName;
             } else {
-                $photo = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
+                $albumPhoto = $constant->BASE_ASSET_URL . "/images/album/default-album.png";
             }
 
-            $query = "INSERT INTO album (name, artist, photo) VALUES ('$name','$artist','$photo')";
+            $query = "INSERT INTO album (albumName, albumPhoto) VALUES ('$albumName', '$albumPhoto')";
             $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            $query = "SELECT albumId from album WHERE albumName = '$albumName' AND albumPhoto = '$albumPhoto'";
+            $execute = mysqli_query($database->connection, $query);
+            $check = mysqli_affected_rows($database->connection);
+
+            $row = mysqli_fetch_object($execute);
+            $albumId = $row->albumId;
+
+            foreach ($accountIds as $index => $accountId) {
+                $query = "INSERT INTO album_artist (albumId, accountId) VALUES ('$albumId', '$accountId')";
+                $execute = mysqli_query($database->connection, $query);
+                $check = mysqli_affected_rows($database->connection);
+                if (!($check > 0)) {
+                    break;
+                }
+            }
+
+            if ($check > 0) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["add_success"];
             } else {
