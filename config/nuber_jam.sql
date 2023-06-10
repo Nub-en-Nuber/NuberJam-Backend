@@ -45,7 +45,6 @@ CREATE TABLE `account` (
 CREATE TABLE `album` (
   `albumId` int(11) NOT NULL,
   `albumName` varchar(250) NOT NULL,
-  `albumArtist` varchar(250) NOT NULL,
   `albumPhoto` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
