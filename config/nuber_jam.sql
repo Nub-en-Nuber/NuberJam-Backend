@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2023 at 04:39 PM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.0.23
+-- Generation Time: Jun 10, 2023 at 04:58 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,15 +24,41 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `accountId` int(11) NOT NULL,
+  `accountName` varchar(250) NOT NULL,
+  `accountUsername` varchar(250) NOT NULL,
+  `accountEmail` varchar(250) NOT NULL,
+  `accountPassword` varchar(250) NOT NULL,
+  `accountPhoto` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `album`
 --
 
 CREATE TABLE `album` (
   `albumId` int(11) NOT NULL,
   `albumName` varchar(250) NOT NULL,
-  `albumArtist` varchar(250) NOT NULL,
   `albumPhoto` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `album_artist`
+--
+
+CREATE TABLE `album_artist` (
+  `artistId` int(11) NOT NULL,
+  `albumId` int(11) NOT NULL,
+  `accountId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -43,8 +69,8 @@ CREATE TABLE `album` (
 CREATE TABLE `favorite` (
   `favoriteId` int(11) NOT NULL,
   `musicId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `accountId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +84,7 @@ CREATE TABLE `music` (
   `musicDuration` int(11) NOT NULL,
   `musicFile` varchar(500) NOT NULL,
   `albumId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -70,8 +96,8 @@ CREATE TABLE `playlist` (
   `playlistId` int(11) NOT NULL,
   `playlistName` varchar(250) NOT NULL,
   `playlistPhoto` varchar(500) NOT NULL,
-  `userId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `accountId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -83,7 +109,7 @@ CREATE TABLE `playlist_detail` (
   `playlistDetailId` int(11) NOT NULL,
   `playlistId` int(11) NOT NULL,
   `musicId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -94,26 +120,19 @@ CREATE TABLE `playlist_detail` (
 CREATE TABLE `token` (
   `id` int(11) NOT NULL,
   `token` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `userId` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  `username` varchar(250) NOT NULL,
-  `email` varchar(250) NOT NULL,
-  `password` varchar(250) NOT NULL,
-  `photo` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`accountId`),
+  ADD UNIQUE KEY `uq_user_username` (`accountUsername`),
+  ADD UNIQUE KEY `uq_user_email` (`accountEmail`);
 
 --
 -- Indexes for table `album`
@@ -122,12 +141,20 @@ ALTER TABLE `album`
   ADD PRIMARY KEY (`albumId`);
 
 --
+-- Indexes for table `album_artist`
+--
+ALTER TABLE `album_artist`
+  ADD PRIMARY KEY (`artistId`),
+  ADD KEY `fk_album_artist_id` (`albumId`),
+  ADD KEY `fk_account_artist_id` (`accountId`);
+
+--
 -- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
   ADD PRIMARY KEY (`favoriteId`),
   ADD KEY `fk_favorite_musicId` (`musicId`),
-  ADD KEY `fk_favorite_userId` (`userId`);
+  ADD KEY `fk_favorite_userId` (`accountId`);
 
 --
 -- Indexes for table `music`
@@ -141,7 +168,7 @@ ALTER TABLE `music`
 --
 ALTER TABLE `playlist`
   ADD PRIMARY KEY (`playlistId`),
-  ADD KEY `fk_playlist_userId` (`userId`);
+  ADD KEY `fk_playlist_userId` (`accountId`);
 
 --
 -- Indexes for table `playlist_detail`
@@ -158,22 +185,26 @@ ALTER TABLE `token`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`userId`),
-  ADD UNIQUE KEY `uq_user_username` (`username`),
-  ADD UNIQUE KEY `uq_user_email` (`email`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `accountId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `album`
 --
 ALTER TABLE `album`
-  MODIFY `albumId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `albumId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `album_artist`
+--
+ALTER TABLE `album_artist`
+  MODIFY `artistId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `favorite`
@@ -185,42 +216,43 @@ ALTER TABLE `favorite`
 -- AUTO_INCREMENT for table `music`
 --
 ALTER TABLE `music`
-  MODIFY `musicId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `musicId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `playlistId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `playlistId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `playlist_detail`
 --
 ALTER TABLE `playlist_detail`
-  MODIFY `playlistDetailId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `playlistDetailId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `album_artist`
+--
+ALTER TABLE `album_artist`
+  ADD CONSTRAINT `fk_account_artist_id` FOREIGN KEY (`accountId`) REFERENCES `account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_album_artist_id` FOREIGN KEY (`albumId`) REFERENCES `album` (`albumId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `favorite`
 --
 ALTER TABLE `favorite`
-  ADD CONSTRAINT `fk_favorite_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`musicId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_favorite_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_favorite_accountId` FOREIGN KEY (`accountId`) REFERENCES `account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_favorite_musicId` FOREIGN KEY (`musicId`) REFERENCES `music` (`musicId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `music`
@@ -232,7 +264,7 @@ ALTER TABLE `music`
 -- Constraints for table `playlist`
 --
 ALTER TABLE `playlist`
-  ADD CONSTRAINT `fk_playlist_userId` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_playlist_accountId` FOREIGN KEY (`accountId`) REFERENCES `account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `playlist_detail`
