@@ -7,7 +7,12 @@ $constant = new Constants();
 
 function getPlaylistAlbumQuery($database, $playlistId, $accountId)
 {
-    $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' GROUP BY `album`.`albumId`";
+    if (isset($_GET['q'])) {
+        $keyword = $_GET['q'];
+        $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `music`.`musicName` LIKE '%$keyword%' GROUP BY `album`.`albumId`";
+    } else {
+        $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' GROUP BY `album`.`albumId`";
+    }
     $execute = mysqli_query($database->connection, $query);
     $check = mysqli_affected_rows($database->connection);
 
@@ -38,7 +43,13 @@ function getSongFavorite($database, $musicId, $accountId)
 
 function getAlbumMusic($database, $albumId, $playlistId, $userId)
 {
-    $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `album`.`albumId` = '$albumId'";
+    if (isset($_GET['q'])) {
+        $keyword = $_GET['q'];
+        $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `album`.`albumId` = '$albumId' AND `music`.`musicName` LIKE '%$keyword%'";
+    } else {
+        $query = "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId`  JOIN `album` ON `music`.`albumId` = `album`.`albumId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `album`.`albumId` = '$albumId'";
+    }
+
     $execute = mysqli_query($database->connection, $query);
     $check = mysqli_affected_rows($database->connection);
 
