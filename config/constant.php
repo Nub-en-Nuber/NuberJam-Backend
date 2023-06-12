@@ -24,6 +24,8 @@ class Constants
         "userid_needed" => "User ID is required to process data",
         "albumid_needed" => "Album ID is required to process data",
         "playlistid_needed" => "Playlist ID is required to process data",
+        "playlist_detail_id_needed" => "Playlist Detail ID is required to process data",
+        "playlist_account_id_needed" => "Playlist and Account ID is required to process data",
         "edit_success" => "Successfully edited data",
         "edit_failed" => "Failed to edit data",
     );
