@@ -8,23 +8,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['userId'])) {
-            $userId = $_GET['userId'];
-            $query = "SELECT * FROM user WHERE id = '$userId'";
+        if (isset($_GET['accountEmail']) || isset($_GET['accountUsername'])) {
+            if (isset($_GET['accountEmail'])) {
+                $accountLogin = $_GET['accountEmail'];
+            } else if (isset($_GET['accountUsername'])) {
+                $accountLogin = $_GET['accountUsername'];
+            }
+
+            $query = "SELECT * FROM account WHERE accountEmail = '$accountLogin' OR accountUsername = '$accountLogin'";
 
             $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            if ($check > 0) {
                 $response["data"] = array();
 
                 while ($row = mysqli_fetch_object($execute)) {
-                    $data["id"] = $row->id;
-                    $data["name"] = $row->name;
-                    $data["username"] = $row->username;
-                    $data["email"] = $row->email;
-                    $data["password"] = $row->password;
-                    $data["photo"] = $row->photo;
+                    $data["accountId"] = $row->accountId;
+                    $data["accountName"] = $row->accountName;
+                    $data["accountUsername"] = $row->accountUsername;
+                    $data["accountEmail"] = $row->accountEmail;
+                    $data["accountPassword"] = $row->accountPassword;
+                    $data["accountPhoto"] = $row->accountPhoto;
                     array_push($response["data"], $data);
                 }
             } else {
@@ -33,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-            $response['message'] = $constant->RESPONSE_MESSAGES["userid_needed"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["email_or_password_needed"];
         }
     }
 } else {
