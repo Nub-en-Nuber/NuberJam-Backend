@@ -8,28 +8,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['userId'])) {
-            $userId = $_GET['userId'];
-            $query = "SELECT * FROM playlist WHERE userId = '$userId'";
-        } else {
-            $query = "SELECT * FROM playlist";
-        }
-        $execute = mysqli_query($database->connection, $query);
-        $cek = mysqli_affected_rows($database->connection);
+        if (isset($_GET['accountId'])) {
+            $accountId = $_GET['accountId'];
+            if ((isset($_GET['q']))) {
+                $keyword = $_GET['q'];
+                $query = "SELECT * FROM playlist WHERE accountId = '$accountId' AND playlistName LIKE '%$keyword%'";
+            } else {
+                $query = "SELECT * FROM playlist WHERE accountId = '$accountId'";
+            }
 
-        if ($cek > 0) {
-            $response["data"] = array();
+            $execute = mysqli_query($database->connection, $query);
+            $check = mysqli_affected_rows($database->connection);
 
-            while ($row = mysqli_fetch_object($execute)) {
-                $data["id"] = $row->id;
-                $data["name"] = $row->name;
-                $data["photo"] = $row->photo;
-                $data["userId"] = $row->userId;
-                array_push($response["data"], $data);
+            if ($check > 0) {
+                $response["data"] = array();
+                $data["playlist"] = array();
+                $data["album"] = array();
+                $data["user"] = array();
+
+                while ($row = mysqli_fetch_object($execute)) {
+                    $playlistData["playlistId"] = $row->playlistId;
+                    $playlistData["playlistName"] = $row->playlistName;
+                    $playlistData["playlistPhoto"] = $row->playlistPhoto;
+                    array_push($data["playlist"], $playlistData);
+                }
+                $response["data"] = $data;
+            } else {
+                $response["status"] = $constant->RESPONSE_STATUS["not_found"];
+                $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];
             }
         } else {
-            $response["status"] = $constant->RESPONSE_STATUS["not_found"];
-            $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];
+            $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["account_id_needed"];
         }
     }
 } else {

@@ -13,25 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         if (!empty($_POST)) {
-            $name = $_POST['name'];
-            $userId = $_POST['userId'];
+            $playlistName = $_POST['playlistName'];
+            $accountId = $_POST['accountId'];
+            $playlistPhoto = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
 
-            $target_dir = "../../asset/images/playlist/";
-            $photoName = Utils::convertCamelString("$userId-$name-") . md5(Utils::convertCamelString("$userId-$name")) . ".png";
-            $target_file = $target_dir . $photoName;
-
-            $photo = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
-            if (isset($_FILES['photo'])) {
-                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                    $photo = $constant->BASE_ASSET_URL . "/images/playlist/" . $photoName;
-                }
-            }
-
-            $query = "INSERT INTO playlist (name, photo, userId) VALUES ('$name','$photo','$userId')";
+            $query = "INSERT INTO playlist (playlistName, playlistPhoto, accountId) VALUES ('$playlistName','$playlistPhoto','$accountId')";
             $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            if ($check > 0) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["add_success"];
             } else {
