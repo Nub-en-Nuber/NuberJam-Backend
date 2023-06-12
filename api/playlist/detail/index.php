@@ -10,9 +10,9 @@ $response = $database->checkToken();
 
 if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        $data['add_song_to_playlist'] = "http://localhost/nuberjam/api/playlist/detail/add.php";
-        $data['read_all_playlist_song'] = "http://localhost/nuberjam/api/playlist/detail/retrieve.php?playlistId={id}&accountId={id}";
-        $data['delete_song_in_playlist'] = "http://localhost/nuberjam/api/playlist/detail/delete.php?playlistDetailId={id}";
+        $data['add_song_to_playlist'] = $constant->BASE_API_URL . "/playlist/detail/add.php";
+        $data['read_all_playlist_song'] = $constant->BASE_API_URL . "/playlist/detail/retrieve.php?playlistId={id}&accountId={id}";
+        $data['delete_song_in_playlist'] = $constant->BASE_API_URL . "/playlist/detail/delete.php?playlistDetailId={id}";
     } else {
         $response["status"] = $constant->RESPONSE_STATUS["unauthorized"];
         $response["message"] = $constant->RESPONSE_MESSAGES['invalid_token'];
