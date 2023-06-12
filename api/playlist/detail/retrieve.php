@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
                     array_push($data["playlist"], $playlistData);
                 }
-                $data["user"] = array();
+                $data["account"] = array();
                 $response["data"] = $data;
             } else {
                 $response["status"] = $constant->RESPONSE_STATUS["not_found"];

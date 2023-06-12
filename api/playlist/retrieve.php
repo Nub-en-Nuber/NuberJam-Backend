@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $response["data"] = array();
                 $data["playlist"] = array();
                 $data["album"] = array();
-                $data["user"] = array();
+                $data["account"] = array();
 
                 while ($row = mysqli_fetch_object($execute)) {
                     $playlistData["playlistId"] = $row->playlistId;
