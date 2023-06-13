@@ -22,16 +22,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             if ($check > 0) {
                 $response["data"] = array();
+                $data["playlist"] = array();
+                $data["album"] = array();
+                $data["account"] = array();
 
                 while ($row = mysqli_fetch_object($execute)) {
-                    $data["accountId"] = $row->accountId;
-                    $data["accountName"] = $row->accountName;
-                    $data["accountUsername"] = $row->accountUsername;
-                    $data["accountEmail"] = $row->accountEmail;
-                    $data["accountPassword"] = $row->accountPassword;
-                    $data["accountPhoto"] = $row->accountPhoto;
-                    array_push($response["data"], $data);
+                    $userData["accountId"] = $row->accountId;
+                    $userData["accountName"] = $row->accountName;
+                    $userData["accountUsername"] = $row->accountUsername;
+                    $userData["accountEmail"] = $row->accountEmail;
+                    $userData["accountPassword"] = $row->accountPassword;
+                    $userData["accountPhoto"] = $row->accountPhoto;
+                    array_push($data["account"], $userData);
                 }
+                $response["data"] = $data;
             } else {
                 $response["status"] = $constant->RESPONSE_STATUS["not_found"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["unavailable_data"];

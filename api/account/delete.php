@@ -1,6 +1,7 @@
 <?php
 
 include "../../config/database.php";
+include "../../config/utils.php";
 $database = new Database();
 $constant = new Constants();
 
@@ -13,13 +14,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         if (isset($_GET['accountId'])) {
             $accountId = $_GET['accountId'];
 
-            $query = "DELETE FROM account WHERE accountId = '$accountId'";
-            $execute = mysqli_query($database->connection, $query);
+            $querySelect = "SELECT * FROM account WHERE accountId = '$accountId'";
+            $executeSelect = mysqli_query($database->connection, $querySelect);
             $check = mysqli_affected_rows($database->connection);
 
             if ($check > 0) {
-                $response["status"] = $constant->RESPONSE_STATUS["success"];
-                $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
+                while ($row = mysqli_fetch_object($executeSelect)) {
+                    $photoPath = $row->accountPhoto;
+                    $photo = explode("/", $photoPath);
+                    $photoName = end($photo);
+                    if ($photoName != "default-account.png") {
+                        Utils::deleteFile("../../asset/images/account/$photoName");
+                    }
+                }
+
+                $query = "DELETE FROM account WHERE accountId = '$accountId'";
+                $execute = mysqli_query($database->connection, $query);
+                $check = mysqli_affected_rows($database->connection);
+
+                if ($check > 0) {
+                    $response["status"] = $constant->RESPONSE_STATUS["success"];
+                    $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
+                } else {
+                    $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
+                    $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
+                }
             } else {
                 $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
