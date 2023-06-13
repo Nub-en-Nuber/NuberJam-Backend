@@ -1,6 +1,8 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
+include '../../../config/utils.php';
+
 $database = new Database();
 $constant = new Constants();
 
@@ -10,14 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['userId'])) {
-            $userId = $_GET['userId'];
+        if (isset($_GET['playlistDetailId'])) {
+            $playlistDetailId = $_GET['playlistDetailId'];
 
-            $query = "DELETE FROM user WHERE id = '$userId'";
+            $query = "DELETE FROM playlist_detail WHERE playlistDetailId = '$playlistDetailId'";
             $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            if ($check > 0) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["delete_success"];
             } else {
@@ -26,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
             }
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-            $response['message'] = $constant->RESPONSE_MESSAGES["userid_needed"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["playlist_detail_id_needed"];
         }
     }
 } else {

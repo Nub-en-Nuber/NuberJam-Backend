@@ -29,4 +29,9 @@ class Utils
             return date($format, time());
         }
     }
+
+    public static function getEncryptPassword($password)
+    {
+        return md5("Pass-'$password'");
+    }
 }

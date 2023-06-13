@@ -15,46 +15,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_GET['playlistId'])) {
             $playlistId = $_GET['playlistId'];
 
-            $cekName = false;
-            $cekPhoto = false;
+            $checkName = false;
+            $checkPhoto = false;
 
-            if (isset($_POST['name'])) {
-                $name = $_POST['name'];
-                $query = "UPDATE playlist SET name = '$name' WHERE id = '$playlistId'";
-                if (mysqli_query($database->connection, $query)) $cekName = true;
+            if (isset($_POST['playlistName'])) {
+                $playlistName = $_POST['playlistName'];
+                $query = "UPDATE playlist SET playlistName = '$playlistName' WHERE playlistId = '$playlistId'";
+                if (mysqli_query($database->connection, $query)) $checkName = true;
             }
 
-            if (isset($_FILES['photo'])) {
-                $querySelect = "SELECT * FROM playlist WHERE id = '$playlistId'";
+            if (isset($_FILES['playlistPhoto'])) {
+                $querySelect = "SELECT * FROM playlist WHERE playlistId = '$playlistId'";
                 $executeSelect = mysqli_query($database->connection, $querySelect);
-                $cek = mysqli_affected_rows($database->connection);
-                if ($cek > 0) {
-                    $photoName = null;
+                $check = mysqli_affected_rows($database->connection);
+                if ($check > 0) {
+                    $playlistPhotoName = null;
+                    $targetDir = "../../asset/images/playlist/";
+
                     while ($row = mysqli_fetch_object($executeSelect)) {
-                        $photoPath = $row->photo;
-                        $photo = explode("/", $photoPath);
-                        $photoName = end($photo);
-                        if ($photoName == "default-playlist.png") {
-                            $userId = $row->userId;
-                            $name = $row->name;
-                            $photoName = Utils::convertCamelString("$userId-$name-") . md5(Utils::convertCamelString("$userId-$name")) . ".png";
+                        $playlistPhotoPath = $row->playlistPhoto;
+                        $playlistPhoto = explode("/", $playlistPhotoPath);
+                        $playlistPhotoName = end($playlistPhoto);
+                        if ($playlistPhotoName != "default-playlist.png") {
+                            Utils::deleteFile($targetDir . $playlistPhotoName);
                         }
+                        $playlistName = $row->playlistName;
+                        $timestamp = Utils::getCurrentDate();
+                        $playlistPhotoName = "playlist-" . md5(Utils::convertCamelString("$playlistName-$timestamp")) . ".png";
                     }
-                    $target_dir = "../../asset/images/playlist/";
-                    $target_file = $target_dir . $photoName;
-                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                        $photo = $constant->BASE_ASSET_URL . "/images/playlist/" . $photoName;
-                    } else {
-                        $photo = $constant->BASE_ASSET_URL . "/images/playlist/default-playlist.png";
+
+                    $targetFile = $targetDir . $playlistPhotoName;
+                    if (move_uploaded_file($_FILES["playlistPhoto"]["tmp_name"], $targetFile)) {
+                        $playlistPhoto = $constant->BASE_ASSET_URL . "/images/playlist/" . $playlistPhotoName;
+                        $query = "UPDATE playlist SET playlistPhoto = '$playlistPhoto' WHERE playlistId = '$playlistId'";
+                        if (mysqli_query($database->connection, $query)) $checkPhoto = true;
                     }
-                    $query = "UPDATE playlist SET photo = '$photo' WHERE id = '$playlistId'";
-                    if (mysqli_query($database->connection, $query)) $cekPhoto = true;
-                } else {
-                    $cekPhoto = false;
                 }
             }
 
-            if ($cekName || $cekPhoto || $cekPassword) {
+            if ($checkName || $checkPhoto) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["edit_success"];
             } else {
@@ -63,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-            $response['message'] = $constant->RESPONSE_MESSAGES["playlistid_needed"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["playlist_id_needed"];
         }
     }
 } else {

@@ -8,14 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['accountId'])) {
-            $accountId = $_GET['accountId'];
-            if ((isset($_GET['q']))) {
-                $keyword = $_GET['q'];
-                $query = "SELECT * FROM playlist WHERE accountId = '$accountId' AND playlistName LIKE '%$keyword%'";
-            } else {
-                $query = "SELECT * FROM playlist WHERE accountId = '$accountId'";
+        if (isset($_GET['accountEmail']) || isset($_GET['accountUsername'])) {
+            if (isset($_GET['accountEmail'])) {
+                $accountLogin = $_GET['accountEmail'];
+            } else if (isset($_GET['accountUsername'])) {
+                $accountLogin = $_GET['accountUsername'];
             }
+
+            $query = "SELECT * FROM account WHERE accountEmail = '$accountLogin' OR accountUsername = '$accountLogin'";
 
             $execute = mysqli_query($database->connection, $query);
             $check = mysqli_affected_rows($database->connection);
@@ -27,10 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 $data["account"] = array();
 
                 while ($row = mysqli_fetch_object($execute)) {
-                    $playlistData["playlistId"] = $row->playlistId;
-                    $playlistData["playlistName"] = $row->playlistName;
-                    $playlistData["playlistPhoto"] = $row->playlistPhoto;
-                    array_push($data["playlist"], $playlistData);
+                    $userData["accountId"] = $row->accountId;
+                    $userData["accountName"] = $row->accountName;
+                    $userData["accountUsername"] = $row->accountUsername;
+                    $userData["accountEmail"] = $row->accountEmail;
+                    $userData["accountPassword"] = $row->accountPassword;
+                    $userData["accountPhoto"] = $row->accountPhoto;
+                    array_push($data["account"], $userData);
                 }
                 $response["data"] = $data;
             } else {
@@ -39,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             }
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-            $response['message'] = $constant->RESPONSE_MESSAGES["account_id_needed"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["email_or_password_needed"];
         }
     }
 } else {

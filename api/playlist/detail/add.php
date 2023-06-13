@@ -1,6 +1,8 @@
 <?php
 
-include "../../config/database.php";
+include "../../../config/database.php";
+include '../../../config/utils.php';
+
 $database = new Database();
 $constant = new Constants();
 
@@ -11,17 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         if (!empty($_POST)) {
-            $name = $_POST['name'];
-            $username = $_POST['username'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $photo = $constant->BASE_URL . "/asset/images/user/default_user.png";
+            $playlistId = $_POST['playlistId'];
+            $musicId = $_POST['musicId'];
 
-            $query = "INSERT INTO user (name, username, email, password, photo) VALUES ('$name','$username','$email','$password','$photo')";
+            $query = "INSERT INTO playlist_detail (playlistId, musicId) VALUES ('$playlistId','$musicId')";
             $execute = mysqli_query($database->connection, $query);
-            $cek = mysqli_affected_rows($database->connection);
+            $check = mysqli_affected_rows($database->connection);
 
-            if ($cek > 0) {
+            if ($check > 0) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["add_success"];
             } else {
