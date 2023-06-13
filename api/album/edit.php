@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } else {
             $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-            $response['message'] = $constant->RESPONSE_MESSAGES["albumid_needed"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["album_id_needed"];
         }
     }
 } else {

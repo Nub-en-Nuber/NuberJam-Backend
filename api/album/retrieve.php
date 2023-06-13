@@ -17,6 +17,34 @@ function getArtistList($database, $albumId)
     return $artistList;
 }
 
+function getFavoriteMusic($database, $musicId)
+{
+    $accountId = $_GET['accountId'];
+    $favoriteQuery = "SELECT * FROM favorite WHERE musicId = '$musicId' AND accountId = '$accountId'";
+    $favoriteResult = mysqli_query($database->connection, $favoriteQuery);
+    $musicIsFavorite = mysqli_num_rows($favoriteResult) > 0 ? true : false;
+
+    return $musicIsFavorite;
+}
+
+function getMusicList($database, $albumId)
+{
+    $musicList = array();
+    $searchQuery = (isset($_GET['q'])) ? $_GET['q'] : "";
+    $queryMusic = "SELECT * FROM music WHERE albumId = '$albumId' AND musicName LIKE '%$searchQuery%'";
+    $executeMusic = mysqli_query($database->connection, $queryMusic);
+    while ($rowMusic = mysqli_fetch_object($executeMusic)) {
+        $musicData["playlistDetailId"] = null;
+        $musicData["musicId"] = $rowMusic->musicId;
+        $musicData["musicName"] = $rowMusic->musicName;
+        $musicData["musicDuration"] = $rowMusic->musicDuration;
+        $musicData["musicFile"] = $rowMusic->musicFile;
+        $musicData["musicIsFavorite"] = getFavoriteMusic($database, $rowMusic->musicId);
+        array_push($musicList, $musicData);
+    }
+    return $musicList;
+}
+
 function getAlbumList($database, $execute)
 {
     $albumList = array();
@@ -25,7 +53,7 @@ function getAlbumList($database, $execute)
         $albumData["albumName"] = $row->albumName;
         $albumData["albumArtist"] = getArtistList($database, $row->albumId);
         $albumData["albumPhoto"] = $row->albumPhoto;
-        $albumData["music"] = array();
+        $albumData["music"] = getMusicList($database, $row->albumId);
         array_push($albumList, $albumData);
     }
     return $albumList;
@@ -35,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (isset($_GET['albumId'])) {
+        if (isset($_GET['albumId']) && isset($_GET['accountId'])) {
             $albumId = $_GET['albumId'];
             $query = "SELECT * FROM album WHERE albumId = '$albumId'";
         } else {

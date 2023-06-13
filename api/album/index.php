@@ -12,7 +12,8 @@ if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         $data['add_album'] = $constant->BASE_API_URL . "/album/add.php";
         $data['read_all_album'] = $constant->BASE_API_URL . "/album/retrieve.php";
-        $data['read_detail_album_by_albumId_and_userId'] = $constant->BASE_API_URL . "/album/retrieve.php?albumId={albumId}&userId={userId}";
+        $data['read_detail_album_by_albumId_and_accountId'] = $constant->BASE_API_URL . "/album/retrieve.php?albumId={albumId}&accountId={accountId}";
+        $data['search_music_in_detail_album'] = $constant->BASE_API_URL . "/album/retrieve.php?albumId={albumId}&accountId={accountId}&q={query}";
         $data['update_album_by_albumId'] = $constant->BASE_API_URL . "/album/edit.php?albumId={albumId}";
         $data['delete_album_by_albumId'] = $constant->BASE_API_URL . "/album/delete.php?albumId={albumId}";
     } else {
