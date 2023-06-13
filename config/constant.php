@@ -33,6 +33,8 @@ class Constants
         "edit_failed" => "Failed to edit data",
         "login_success" => "Successfully login",
         "login_failed" => "Failed to login",
+        "account_artist" => "You're artist",
+        "account_not_artist" => "You're not artist",
     );
     var $RESPONSE_STATUS = array(
         "success" => 200,
