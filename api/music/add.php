@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $targetDir = "../../asset/music/";
             $timestamp = Utils::getCurrentDate();
-            $musicName = "music-" . md5(Utils::convertCamelString("$musicName-$timestamp")) . ".mp3";
-            $targetFile = $targetDir . $musicName;
+            $musicFileName = "music-" . md5(Utils::convertCamelString("$musicName-$timestamp")) . ".mp3";
+            $targetFile = $targetDir . $musicFileName;
             if (move_uploaded_file($_FILES["musicFile"]["tmp_name"], $targetFile)) {
-                $musicFile = $constant->BASE_ASSET_URL . "/music/" . $musicName;
+                $musicFile = $constant->BASE_ASSET_URL . "/music/" . $musicFileName;
 
                 $query = "INSERT INTO music (musicName, musicDuration, musicFile, albumId) VALUES ('$musicName', $musicDuration, '$musicFile', $albumId)";
                 $execute = mysqli_query($database->connection, $query);
