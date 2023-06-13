@@ -38,7 +38,7 @@ function getAlbumMusic($dataTempList, $albumId)
     return $musicList;
 }
 
-function getAlbumList($database, $dataTempList)
+function getAlbumList($dataTempList)
 {
     $albumList = array();
     $albumListDistinct = getAlbumListDistinct($dataTempList);
@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     array_push($tempList, $temp);
                 }
                 $data["playlist"] = array();
-                $data["album"] = getAlbumList($database, $tempList);
+                $data["album"] = getAlbumList($tempList);
                 $data["account"] = array();
                 $response['data'] = $data;
             } else {
