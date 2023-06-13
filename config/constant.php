@@ -25,6 +25,7 @@ class Constants
         "email_or_password_needed" => "Email or Password is required to process data",
         "album_id_needed" => "Album ID is required to process data",
         "music_id_needed" => "Music ID is required to process data",
+        "music_and_account_id_needed" => "Music and Account ID is required to process data",
         "playlist_id_needed" => "Playlist ID is required to process data",
         "playlist_detail_id_needed" => "Playlist Detail ID is required to process data",
         "playlist_account_id_needed" => "Playlist and Account ID is required to process data",
