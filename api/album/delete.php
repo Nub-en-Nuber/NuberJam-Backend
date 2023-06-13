@@ -43,6 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
                 $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["delete_failed"];
             }
+        } else {
+            $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+            $response['message'] = $constant->RESPONSE_MESSAGES["album_id_needed"];
         }
     }
 } else {
