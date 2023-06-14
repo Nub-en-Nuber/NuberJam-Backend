@@ -7,24 +7,6 @@ $constant = new Constants();
 
 $response = array();
 
-function deletePlaylistPhoto($database, $playlistId)
-{
-    $querySelect = "SELECT * FROM playlist WHERE playlistId = '$playlistId'";
-    $executeSelect = mysqli_query($database->connection, $querySelect);
-    $check = mysqli_affected_rows($database->connection);
-
-    if ($check > 0) {
-        while ($row = mysqli_fetch_object($executeSelect)) {
-            $photoPath = $row->playlistPhoto;
-            $photo = explode("/", $photoPath);
-            $photoName = end($photo);
-            if ($photoName != "default-playlist.png") {
-                Utils::deleteFile("../../asset/images/playlist/$photoName");
-            }
-        }
-    }
-}
-
 function getPlaylistByAccount($database, $accountId)
 {
     $query = "SELECT * FROM playlist WHERE accountId = '$accountId'";
@@ -33,7 +15,20 @@ function getPlaylistByAccount($database, $accountId)
 
     if ($check > 0) {
         while ($row = mysqli_fetch_object($execute)) {
-            deletePlaylistPhoto($database, $row->playlistId);
+            $querySelect = "SELECT * FROM playlist WHERE playlistId = '$row->playlistId'";
+            $executeSelect = mysqli_query($database->connection, $querySelect);
+            $check = mysqli_affected_rows($database->connection);
+
+            if ($check > 0) {
+                while ($row = mysqli_fetch_object($executeSelect)) {
+                    $photoPath = $row->playlistPhoto;
+                    $photo = explode("/", $photoPath);
+                    $photoName = end($photo);
+                    if ($photoName != "default-playlist.png") {
+                        Utils::deleteFile("../../asset/images/playlist/$photoName");
+                    }
+                }
+            }
         }
     }
 }
