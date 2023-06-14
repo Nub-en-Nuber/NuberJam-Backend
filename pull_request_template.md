@@ -1,5 +1,5 @@
 ## Update Items
-- [ ] Put here the Jira issue (Example: [MP-XXXX] Task Title)
+- [ ] Put here the Jira issue (Example: [MP-XXXX] Task Title)x
 
 ## Summary Description
 - Explain briefly of what you did in each commit in this task
