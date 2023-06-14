@@ -7,6 +7,24 @@ $constant = new Constants();
 
 $response = array();
 
+function getPlaylistByAccount($database, $accountId)
+{
+    $query = "SELECT * FROM playlist WHERE accountId = '$accountId'";
+    $execute = mysqli_query($database->connection, $query);
+    $check = mysqli_affected_rows($database->connection);
+
+    if ($check > 0) {
+        while ($row = mysqli_fetch_object($execute)) {
+            $photoPath = $row->playlistPhoto;
+            $photo = explode("/", $photoPath);
+            $photoName = end($photo);
+            if ($photoName != "default-playlist.png") {
+                Utils::deleteFile("../../asset/images/playlist/$photoName");
+            }
+        }
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     $response = $database->checkToken();
 
@@ -27,6 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
                         Utils::deleteFile("../../asset/images/account/$photoName");
                     }
                 }
+
+                getPlaylistByAccount($database, $accountId);
 
                 $query = "DELETE FROM account WHERE accountId = '$accountId'";
                 $execute = mysqli_query($database->connection, $query);
