@@ -37,6 +37,7 @@ class Constants
         "account_not_artist" => "You're not artist",
         "account_not_exist" => "Account doesn't exist",
         "album_not_exist" => "Album doesn't exist",
+        "music_or_account_not_exist" => "Music or Account doesn't exist",
     );
     var $RESPONSE_STATUS = array(
         "success" => 200,
