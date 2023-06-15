@@ -15,16 +15,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['accountId'])) {
                 $accountId = $_POST['accountId'];
 
-                $query = "SELECT * FROM album_artist WHERE accountId = '$accountId'";
-                $execute = mysqli_query($database->connection, $query);
-                $accountIsArtist = mysqli_num_rows($execute) > 0 ? true : false;
+                $queryCheck = "SELECT * FROM account WHERE accountId = '$accountId'";
+                $execute = mysqli_query($database->connection, $queryCheck);
+                $accountIsExist = mysqli_num_rows($execute) > 0 ? true : false;
 
-                if ($accountIsArtist) {
-                    $response["status"] = $constant->RESPONSE_STATUS["success"];
-                    $response["message"] = $constant->RESPONSE_MESSAGES["account_artist"];
+                if ($accountIsExist) {
+                    $query = "SELECT * FROM album_artist WHERE accountId = '$accountId'";
+                    $execute = mysqli_query($database->connection, $query);
+                    $accountIsArtist = mysqli_num_rows($execute) > 0 ? true : false;
+
+                    if ($accountIsArtist) {
+                        $response["status"] = $constant->RESPONSE_STATUS["success"];
+                        $response["message"] = $constant->RESPONSE_MESSAGES["account_artist"];
+                    } else {
+                        $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
+                        $response["message"] = $constant->RESPONSE_MESSAGES["account_not_artist"];
+                    }
                 } else {
-                    $response["status"] = $constant->RESPONSE_STATUS["internal_server_error"];
-                    $response["message"] = $constant->RESPONSE_MESSAGES["account_not_artist"];
+                    $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
+                    $response['message'] = $constant->RESPONSE_MESSAGES["unavailable_data"];
                 }
             } else {
                 $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
