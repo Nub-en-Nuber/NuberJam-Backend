@@ -30,17 +30,19 @@ function getFavoriteMusic($database, $musicId)
 function getMusicList($database, $albumId)
 {
     $musicList = array();
-    $searchQuery = (isset($_GET['q'])) ? $_GET['q'] : "";
-    $queryMusic = "SELECT * FROM music WHERE albumId = '$albumId' AND musicName LIKE '%$searchQuery%'";
-    $executeMusic = mysqli_query($database->connection, $queryMusic);
-    while ($rowMusic = mysqli_fetch_object($executeMusic)) {
-        $musicData["playlistDetailId"] = null;
-        $musicData["musicId"] = $rowMusic->musicId;
-        $musicData["musicName"] = $rowMusic->musicName;
-        $musicData["musicDuration"] = $rowMusic->musicDuration;
-        $musicData["musicFile"] = $rowMusic->musicFile;
-        $musicData["musicIsFavorite"] = getFavoriteMusic($database, $rowMusic->musicId);
-        array_push($musicList, $musicData);
+    if (isset($_GET['albumId']) && isset($_GET['accountId'])) {
+        $searchQuery = (isset($_GET['q'])) ? $_GET['q'] : "";
+        $queryMusic = "SELECT * FROM music WHERE albumId = '$albumId' AND musicName LIKE '%$searchQuery%'";
+        $executeMusic = mysqli_query($database->connection, $queryMusic);
+        while ($rowMusic = mysqli_fetch_object($executeMusic)) {
+            $musicData["playlistDetailId"] = null;
+            $musicData["musicId"] = $rowMusic->musicId;
+            $musicData["musicName"] = $rowMusic->musicName;
+            $musicData["musicDuration"] = $rowMusic->musicDuration;
+            $musicData["musicFile"] = $rowMusic->musicFile;
+            $musicData["musicIsFavorite"] = getFavoriteMusic($database, $rowMusic->musicId);
+            array_push($musicList, $musicData);
+        }
     }
     return $musicList;
 }

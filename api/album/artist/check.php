@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $queryCheck = "SELECT * FROM account WHERE accountId = '$accountId'";
                 $execute = mysqli_query($database->connection, $queryCheck);
-                $accountIsExist = mysqli_num_rows($execute) > 0 ? true : false;
+                $accountExist = mysqli_num_rows($execute) > 0 ? true : false;
 
-                if ($accountIsExist) {
+                if ($accountExist) {
                     $query = "SELECT * FROM album_artist WHERE accountId = '$accountId'";
                     $execute = mysqli_query($database->connection, $query);
                     $accountIsArtist = mysqli_num_rows($execute) > 0 ? true : false;
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     }
                 } else {
                     $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
-                    $response['message'] = $constant->RESPONSE_MESSAGES["unavailable_data"];
+                    $response['message'] = $constant->RESPONSE_MESSAGES["account_not_exist"];
                 }
             } else {
                 $response["status"] = $constant->RESPONSE_STATUS["bad_request"];
