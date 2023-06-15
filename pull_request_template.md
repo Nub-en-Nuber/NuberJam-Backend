@@ -20,3 +20,4 @@
 - [ ] playlist-detail: Changes that affect playlist-detail packages
 - [ ] album-artist: Changes that affect album-artist packages
 - [ ] general: all stuff except above
+- [ ] test
