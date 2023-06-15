@@ -21,23 +21,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (isset($_POST['musicName'])) {
                 $musicName = $_POST['musicName'];
-                $query = "UPDATE music SET musicName = '$musicName' WHERE musicId = '$musicId'";
-                if (mysqli_query($database->connection, $query)) $checkName = true;
+                if (!empty($musicName)) {
+                    $query = "UPDATE music SET musicName = '$musicName' WHERE musicId = '$musicId'";
+                    if (mysqli_query($database->connection, $query)) $checkName = true;
+                }
             }
 
             if (isset($_POST['musicDuration'])) {
                 $musicDuration = $_POST['musicDuration'];
-                $query = "UPDATE music SET musicDuration = '$musicDuration' WHERE musicId = '$musicId'";
-                if (mysqli_query($database->connection, $query)) $checkDuration = true;
+                if (!empty($musicDuration)) {
+                    $query = "UPDATE music SET musicDuration = '$musicDuration' WHERE musicId = '$musicId'";
+                    if (mysqli_query($database->connection, $query)) $checkDuration = true;
+                }
             }
 
             if (isset($_POST['albumId'])) {
                 $albumId = $_POST['albumId'];
-                $query = "UPDATE music SET albumId = '$albumId' WHERE musicId = '$musicId'";
-                if (mysqli_query($database->connection, $query)) $checkAlbumId = true;
+                if (!empty($albumId)) {
+                    $queryCheck = "SELECT * FROM album WHERE albumId = '$albumId'";
+                    $execute = mysqli_query($database->connection, $queryCheck);
+                    $albumExist = mysqli_num_rows($execute) > 0 ? true : false;
+                    if ($albumExist) {
+                        $query = "UPDATE music SET albumId = '$albumId' WHERE musicId = '$musicId'";
+                        if (mysqli_query($database->connection, $query)) $checkAlbumId = true;
+                    }
+                }
             }
 
-            if (isset($_FILES['musicFile'])) {
+            if (isset($_FILES['musicFile']["tmp_name"])) {
                 $querySelect = "SELECT * FROM music WHERE musicId = '$musicId'";
                 $executeSelect = mysqli_query($database->connection, $querySelect);
                 $check = mysqli_affected_rows($database->connection);
