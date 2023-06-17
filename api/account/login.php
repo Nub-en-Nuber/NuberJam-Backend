@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        if (!empty($_POST)) {
+        if ((!empty($_POST['accountEmail']) || !empty($_POST['accountUsername'])) && !empty($_POST['accountPassword'])) {
             if (isset($_POST['accountEmail'])) {
                 $accountLogin = $_POST['accountEmail'];
             } else if (isset($_POST['accountUsername'])) {

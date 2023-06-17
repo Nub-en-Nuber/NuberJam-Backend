@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $checkPhoto = false;
             $checkPassword = false;
 
-            if (isset($_POST['accountName'])) {
+            if (!empty($_POST['accountName'])) {
                 $accountName = $_POST['accountName'];
                 $query = "UPDATE account SET accountName = '$accountName' WHERE accountId = '$accountId'";
                 if (mysqli_query($database->connection, $query)) $checkName = true;
             }
 
-            if (isset($_FILES['accountPhoto'])) {
+            if (!empty($_FILES['accountPhoto'])) {
                 $querySelect = "SELECT * FROM account WHERE accountId = '$accountId'";
                 $executeSelect = mysqli_query($database->connection, $querySelect);
                 $check = mysqli_affected_rows($database->connection);
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            if (isset($_POST['accountPassword'])) {
+            if (!empty($_POST['accountPassword'])) {
                 $accountPassword = $_POST['accountPassword'];
                 $encryptPassword = Utils::getEncryptPassword($accountPassword);
                 $query = "UPDATE account SET accountPassword = '$encryptPassword' WHERE accountId = '$accountId'";

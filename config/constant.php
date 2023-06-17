@@ -38,6 +38,8 @@ class Constants
         "account_not_exist" => "Account doesn't exist",
         "album_not_exist" => "Album doesn't exist",
         "music_or_account_not_exist" => "Music or Account doesn't exist",
+        "email_used" => "The email entered has been used",
+        "username_used" => "The username entered has been used",
     );
     var $RESPONSE_STATUS = array(
         "success" => 200,
