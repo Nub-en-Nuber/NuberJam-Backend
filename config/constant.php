@@ -1,7 +1,7 @@
 <?php
 class Constants
 {
-    var $host = "localhost";
+    var $host = "https://nuber-jam.000webhostapp.com/";
     var $user = "id20891492_root";
     var $pass = "@VERHARDverstand2023";
     var $database = "id20891492_nuber_jam";
