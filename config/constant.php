@@ -1,14 +1,14 @@
 <?php
 class Constants
 {
-    var $host = "https://nuber-jam.000webhostapp.com/";
-    var $user = "id20891492_root";
-    var $pass = "@VERHARDverstand2023";
-    var $database = "id20891492_nuber_jam";
+    var $host = "localhost";
+    var $user = "526021";
+    var $pass = "ywUjzY!qBnJt4TT";
+    var $database = "526021";
 
-    var $BASE_URL = "https://nuber-jam.000webhostapp.com/";
-    var $BASE_API_URL = "https://nuber-jam.000webhostapp.com//api";
-    var $BASE_ASSET_URL = "https://nuber-jam.000webhostapp.com//asset";
+    var $BASE_URL = "http://nuberjam.orgfree.com/";
+    var $BASE_API_URL = "http://nuberjam.orgfree.com/api";
+    var $BASE_ASSET_URL = "http://nuberjam.orgfree.com/asset";
     var $DATABASE_ERROR = "MYSQL database is not connected correctly";
     var $RESPONSE_MESSAGES = array(
         "add_success" => "Successfully added data",
