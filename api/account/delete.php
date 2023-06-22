@@ -25,7 +25,7 @@ function getPlaylistByAccount($database, $accountId)
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = $database->checkToken();
 
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
