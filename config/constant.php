@@ -7,8 +7,9 @@ class Constants
     var $database = "526021";
 
     var $BASE_URL = "http://nuberjam.orgfree.com/";
-    var $BASE_API_URL = "http://nuberjam.orgfree.com/api";
-    var $BASE_ASSET_URL = "http://nuberjam.orgfree.com/asset";
+    var $BASE_API_URL = "http://nuberjam.orgfree.com/api/";
+    var $BASE_ASSET_URL = "http://nuberjam.orgfree.com/asset/";
+    
     var $DATABASE_ERROR = "MYSQL database is not connected correctly";
     var $RESPONSE_MESSAGES = array(
         "add_success" => "Successfully added data",
