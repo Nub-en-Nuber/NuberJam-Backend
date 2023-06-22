@@ -6,9 +6,10 @@ class Constants
     var $pass = "";
     var $database = "nuber_jam";
 
-    var $BASE_URL = "http://localhost/nuberjam";
-    var $BASE_API_URL = "http://localhost/nuberjam/api";
-    var $BASE_ASSET_URL = "http://localhost/nuberjam/asset";
+    var $BASE_URL = "http://localhost/nuberjam/";
+    var $BASE_API_URL = "http://localhost/nuberjam/api/";
+    var $BASE_ASSET_URL = "http://localhost/nuberjam/asset/";
+
     var $DATABASE_ERROR = "MYSQL database is not connected correctly";
     var $RESPONSE_MESSAGES = array(
         "add_success" => "Successfully added data",
