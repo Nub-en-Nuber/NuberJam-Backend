@@ -3,7 +3,7 @@ class Constants
 {
     var $host = "localhost";
     var $user = "526021";
-    var $pass = "aRaaV9CoME";
+    var $pass = "ywUjzY!qBnJt4TT";
     var $database = "526021";
 
     var $BASE_URL = "http://nuberjam.orgfree.com/";
