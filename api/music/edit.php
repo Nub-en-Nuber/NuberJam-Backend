@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $checkMusicFile = false;
             $checkDuration = false;
             $checkAlbumId = false;
+            $checkArtist = false;
 
             if (isset($_POST['musicName'])) {
                 $musicName = $_POST['musicName'];
@@ -32,6 +33,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (!empty($musicDuration)) {
                     $query = "UPDATE music SET musicDuration = '$musicDuration' WHERE musicId = '$musicId'";
                     if (mysqli_query($database->connection, $query)) $checkDuration = true;
+                }
+            }
+
+            if (isset($_POST['accountIds'])) {
+                $accountIds = $_POST['accountIds'];
+                if (!in_array("", $accountIds)) {
+                    $accountExist = false;
+                    foreach ($accountIds as $index => $accountId) {
+                        $queryCheck = "SELECT * FROM account WHERE accountId = '$accountId'";
+                        $execute = mysqli_query($database->connection, $queryCheck);
+                        $accountExist = mysqli_num_rows($execute) > 0 ? true : false;
+                        if (!$accountExist) {
+                            break;
+                        }
+                    }
+                    if ($accountExist) {
+                        $query = "DELETE FROM music_artist WHERE musicId = '$musicId'";
+                        $execute = mysqli_query($database->connection, $query);
+                        foreach ($accountIds as $index => $accountId) {
+                            $query = "INSERT INTO music_artist (musicId, accountId) VALUES ('$musicId', '$accountId')";
+                            if (mysqli_query($database->connection, $query)) $checkArtist = true;
+                        }
+                    }
                 }
             }
 
@@ -79,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            if ($checkName || $checkMusicFile || $checkDuration || $checkAlbumId) {
+            if ($checkName || $checkMusicFile || $checkDuration || $checkAlbumId || $checkArtist) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["edit_success"];
             } else {
