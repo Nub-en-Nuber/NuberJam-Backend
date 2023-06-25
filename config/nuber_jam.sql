@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2023 at 04:58 AM
+-- Generation Time: Jun 25, 2023 at 02:24 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -51,18 +51,6 @@ CREATE TABLE `album` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `album_artist`
---
-
-CREATE TABLE `album_artist` (
-  `artistId` int(11) NOT NULL,
-  `albumId` int(11) NOT NULL,
-  `accountId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `favorite`
 --
 
@@ -84,6 +72,18 @@ CREATE TABLE `music` (
   `musicDuration` int(11) NOT NULL,
   `musicFile` varchar(500) NOT NULL,
   `albumId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `music_artist`
+--
+
+CREATE TABLE `music_artist` (
+  `artistId` int(11) NOT NULL,
+  `musicId` int(11) NOT NULL,
+  `accountId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -123,6 +123,13 @@ CREATE TABLE `token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `token`
+--
+
+INSERT INTO `token` (`id`, `token`) VALUES
+(1, 'RAj6ALw6JEToPg5Rij4nX2bPMwvDB5dP');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -141,14 +148,6 @@ ALTER TABLE `album`
   ADD PRIMARY KEY (`albumId`);
 
 --
--- Indexes for table `album_artist`
---
-ALTER TABLE `album_artist`
-  ADD PRIMARY KEY (`artistId`),
-  ADD KEY `fk_album_artist_id` (`albumId`),
-  ADD KEY `fk_account_artist_id` (`accountId`);
-
---
 -- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
@@ -162,6 +161,14 @@ ALTER TABLE `favorite`
 ALTER TABLE `music`
   ADD PRIMARY KEY (`musicId`),
   ADD KEY `fk_music_albumId` (`albumId`);
+
+--
+-- Indexes for table `music_artist`
+--
+ALTER TABLE `music_artist`
+  ADD PRIMARY KEY (`artistId`),
+  ADD KEY `fk_account_artist_id` (`accountId`),
+  ADD KEY `fk_music_artist_id` (`musicId`);
 
 --
 -- Indexes for table `playlist`
@@ -201,12 +208,6 @@ ALTER TABLE `album`
   MODIFY `albumId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `album_artist`
---
-ALTER TABLE `album_artist`
-  MODIFY `artistId` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
@@ -217,6 +218,12 @@ ALTER TABLE `favorite`
 --
 ALTER TABLE `music`
   MODIFY `musicId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `music_artist`
+--
+ALTER TABLE `music_artist`
+  MODIFY `artistId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `playlist`
@@ -234,18 +241,11 @@ ALTER TABLE `playlist_detail`
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `album_artist`
---
-ALTER TABLE `album_artist`
-  ADD CONSTRAINT `fk_account_artist_id` FOREIGN KEY (`accountId`) REFERENCES `account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_album_artist_id` FOREIGN KEY (`albumId`) REFERENCES `album` (`albumId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `favorite`
@@ -259,6 +259,13 @@ ALTER TABLE `favorite`
 --
 ALTER TABLE `music`
   ADD CONSTRAINT `fk_music_albumId` FOREIGN KEY (`albumId`) REFERENCES `album` (`albumId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `music_artist`
+--
+ALTER TABLE `music_artist`
+  ADD CONSTRAINT `fk_account_artist_id` FOREIGN KEY (`accountId`) REFERENCES `account` (`accountId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_music_artist_id` FOREIGN KEY (`musicId`) REFERENCES `music` (`musicId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `playlist`
