@@ -10,7 +10,7 @@ $response = $database->checkToken();
 
 if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
-        $data['check_account_artist'] = $constant->BASE_API_URL . "/album/artist/check.php";
+        $data['check_account_artist'] = $constant->BASE_API_URL . "/music/artist/check.php";
     } else {
         $response["status"] = $constant->RESPONSE_STATUS["unauthorized"];
         $response["message"] = $constant->RESPONSE_MESSAGES['invalid_token'];
