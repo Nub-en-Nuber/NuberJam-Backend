@@ -89,9 +89,9 @@ function getPlaylistDetail($playlistId)
 {
     if (isset($_GET['q'])) {
         $keyword = $_GET['q'];
-        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `music`.`musicName` LIKE '%$keyword%'";
+        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `music`.`musicName` LIKE '%$keyword%' GROUP BY `playlist`.`playlistId`";
     } else {
-        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId'";
+        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId' GROUP BY `playlist`.`playlistId`";
     }
     
 }
