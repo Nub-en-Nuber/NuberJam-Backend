@@ -26,29 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            if (isset($_POST['accountIds'])) {
-                $accountIds = $_POST['accountIds'];
-                if (!in_array("", $accountIds)) {
-                    $accountExist = false;
-                    foreach ($accountIds as $index => $accountId) {
-                        $queryCheck = "SELECT * FROM account WHERE accountId = '$accountId'";
-                        $execute = mysqli_query($database->connection, $queryCheck);
-                        $accountExist = mysqli_num_rows($execute) > 0 ? true : false;
-                        if (!$accountExist) {
-                            break;
-                        }
-                    }
-                    if ($accountExist) {
-                        $query = "DELETE FROM album_artist WHERE albumId = '$albumId'";
-                        $execute = mysqli_query($database->connection, $query);
-                        foreach ($accountIds as $index => $accountId) {
-                            $query = "INSERT INTO album_artist (albumId, accountId) VALUES ('$albumId', '$accountId')";
-                            if (mysqli_query($database->connection, $query)) $checkArtist = true;
-                        }
-                    }
-                }
-            }
-
             if (isset($_FILES['albumPhoto']["tmp_name"])) {
                 $querySelect = "SELECT * FROM album WHERE albumId = '$albumId'";
                 $executeSelect = mysqli_query($database->connection, $querySelect);
@@ -78,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
 
-            if ($checkName || $checkPhoto || $checkArtist) {
+            if ($checkName || $checkPhoto) {
                 $response["status"] = $constant->RESPONSE_STATUS["success"];
                 $response["message"] = $constant->RESPONSE_MESSAGES["edit_success"];
             } else {
