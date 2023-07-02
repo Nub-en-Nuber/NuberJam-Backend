@@ -12,7 +12,7 @@ if (isset($_GET['token'])) {
     if ($response["status"] == $constant->RESPONSE_STATUS["success"]) {
         $data['account_endpoint'] = $constant->BASE_API_URL . "/account";
         $data['album_endpoint'] = $constant->BASE_API_URL . "/album";
-        $data['album_artist_endpoint'] = $constant->BASE_API_URL . "/album/artist";
+        $data['music_artist_endpoint'] = $constant->BASE_API_URL . "/music/artist";
         $data['music_endpoint'] = $constant->BASE_API_URL . "/music";
         $data['favorite_endpoint'] = $constant->BASE_API_URL . "/favorite";
         $data['playlist_endpoint'] = $constant->BASE_API_URL . "/playlist";
