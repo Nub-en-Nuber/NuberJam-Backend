@@ -4,10 +4,10 @@ include '../../config/database.php';
 $database = new Database();
 $constant = new Constants();
 
-function getArtistList($database, $albumId)
+function getArtistList($database, $musicId)
 {
     $artistList = array();
-    $queryArtist = "SELECT * FROM album_artist LEFT JOIN account ON account.accountId = album_artist.accountId WHERE albumId = '$albumId'";
+    $queryArtist = "SELECT * FROM music_artist LEFT JOIN account ON account.accountId = music_artist.accountId WHERE musicId = '$musicId'";
     $executeArtist = mysqli_query($database->connection, $queryArtist);
     while ($rowArtist = mysqli_fetch_object($executeArtist)) {
         $artistData["accountId"] = $rowArtist->accountId;
@@ -40,6 +40,7 @@ function getMusicList($database, $albumId)
             $musicData["musicName"] = $rowMusic->musicName;
             $musicData["musicDuration"] = $rowMusic->musicDuration;
             $musicData["musicFile"] = $rowMusic->musicFile;
+            $musicData["musicArtist"] = getArtistList($database, $rowMusic->musicId);
             $musicData["musicIsFavorite"] = getFavoriteMusic($database, $rowMusic->musicId);
             array_push($musicList, $musicData);
         }
@@ -53,7 +54,6 @@ function getAlbumList($database, $execute)
     while ($row = mysqli_fetch_object($execute)) {
         $albumData["albumId"] = $row->albumId;
         $albumData["albumName"] = $row->albumName;
-        $albumData["albumArtist"] = getArtistList($database, $row->albumId);
         $albumData["albumPhoto"] = $row->albumPhoto;
         $albumData["music"] = getMusicList($database, $row->albumId);
         array_push($albumList, $albumData);

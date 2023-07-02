@@ -12,7 +12,7 @@ function getAlbumListDistinct($dataTempList)
         if (!in_array($dataTemp['albumId'], $albumListIdDistinct)) {
             $albumTemp['albumId'] = $dataTemp['albumId'];
             $albumTemp['albumName'] = $dataTemp['albumName'];
-            $albumTemp['albumArtist'] = $dataTemp['albumArtist'];
+            $albumTemp['musicArtist'] = $dataTemp['musicArtist'];
             $albumTemp['albumPhoto'] = $dataTemp['albumPhoto'];
             array_push($albumListDistinct, $albumTemp);
             array_push($albumListIdDistinct, $dataTemp['albumId']);
@@ -31,6 +31,7 @@ function getAlbumMusic($dataTempList, $albumId)
             $musicData["musicName"] = $dataTemp['musicName'];
             $musicData["musicDuration"] = $dataTemp['musicDuration'];
             $musicData["musicFile"] = $dataTemp['musicFile'];
+            $musicData["musicArtist"] = $dataTemp["musicArtist"];
             $musicData["musicIsFavorite"] = $dataTemp['musicIsFavorite'];
             array_push($musicList, $musicData);
         }
@@ -45,7 +46,6 @@ function getAlbumList($dataTempList)
     foreach ($albumListDistinct as $albumDistinct) {
         $albumData["albumId"] = $albumDistinct["albumId"];
         $albumData["albumName"] = $albumDistinct["albumName"];
-        $albumData["albumArtist"] = $albumDistinct["albumArtist"];
         $albumData["albumPhoto"] = $albumDistinct["albumPhoto"];
         $albumData["music"] = getAlbumMusic($dataTempList, $albumDistinct["albumId"]);
         array_push($albumList, $albumData);
@@ -53,10 +53,11 @@ function getAlbumList($dataTempList)
     return $albumList;
 }
 
-function getAlbumArtist($database, $albumId)
+function getMusicArtist($database, $musicId)
 {
+    echo $musicId;
     $artistList = array();
-    $queryArtist = "SELECT * FROM album_artist LEFT JOIN account ON account.accountId = album_artist.accountId WHERE albumId = '$albumId'";
+    $queryArtist = "SELECT * FROM music_artist LEFT JOIN account ON account.accountId = music_artist.accountId WHERE musicId = '$musicId'";
     $executeArtist = mysqli_query($database->connection, $queryArtist);
     while ($rowArtist = mysqli_fetch_object($executeArtist)) {
         $artistData["accountId"] = $rowArtist->accountId;
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $temp["albumName"] = $row->albumName;
                     $temp["albumPhoto"] = $row->albumPhoto;
                     $temp["musicIsFavorite"] = true;
-                    $temp["albumArtist"] = getAlbumArtist($database, $row->albumId);
+                    $temp["musicArtist"] = getMusicArtist($database, $row->musicId);
                     array_push($tempList, $temp);
                 }
                 $data["playlist"] = array();

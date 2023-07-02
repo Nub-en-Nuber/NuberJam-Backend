@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $accountExist = mysqli_num_rows($execute) > 0 ? true : false;
 
                 if ($accountExist) {
-                    $query = "SELECT * FROM album_artist WHERE accountId = '$accountId'";
+                    $query = "SELECT * FROM music_artist WHERE accountId = '$accountId'";
                     $execute = mysqli_query($database->connection, $query);
                     $accountIsArtist = mysqli_num_rows($execute) > 0 ? true : false;
 
