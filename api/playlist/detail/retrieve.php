@@ -22,7 +22,6 @@ function getPlaylistAlbumQuery($database, $playlistId, $accountId)
 
             $albumData["albumId"] = $row->albumId;
             $albumData["albumName"] = $row->albumName;
-            $albumData["albumArtist"] = getAlbumArtist($database, $row->albumId);
             $albumData["albumPhoto"] = $row->albumPhoto;
             $albumData["music"] = getAlbumMusic($database, $row->albumId, $playlistId, $accountId);
 
@@ -61,6 +60,7 @@ function getAlbumMusic($database, $albumId, $playlistId, $userId)
             $songData["musicName"] = $row->musicName;
             $songData["musicDuration"] = $row->musicDuration;
             $songData["musicFile"] = $row->musicFile;
+            $songData["musicArtist"] = getMusicArtist($database, $row->musicId);
             $songData["musicIsFavorite"] = getSongFavorite($database, $row->musicId, $userId);
             array_push($song, $songData);
         }
@@ -68,9 +68,9 @@ function getAlbumMusic($database, $albumId, $playlistId, $userId)
     return $song;
 }
 
-function getAlbumArtist($database, $albumId)
+function getMusicArtist($database, $musicId)
 {
-    $query = "SELECT * FROM `album_artist` JOIN `account` ON `album_artist`.`accountId` = `account`.`accountId` WHERE `albumId` = '$albumId'";
+    $query = "SELECT * FROM `music_artist` JOIN `account` ON `music_artist`.`accountId` = `account`.`accountId` WHERE `musicId` = '$musicId'";
     $execute = mysqli_query($database->connection, $query);
     $check = mysqli_affected_rows($database->connection);
 
@@ -87,7 +87,13 @@ function getAlbumArtist($database, $albumId)
 
 function getPlaylistDetail($playlistId)
 {
-    return "SELECT * FROM `playlist` WHERE `playlistId` = '$playlistId'";
+    if (isset($_GET['q'])) {
+        $keyword = $_GET['q'];
+        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId' AND `music`.`musicName` LIKE '%$keyword%' GROUP BY `playlist`.`playlistId`";
+    } else {
+        return "SELECT * FROM `playlist_detail` JOIN `music` ON `playlist_detail`.`musicId` = `music`.`musicId` JOIN `playlist` ON `playlist_detail`.`playlistId` = `playlist`.`playlistId` WHERE `playlist_detail`.`playlistId` = '$playlistId' GROUP BY `playlist`.`playlistId`";
+    }
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

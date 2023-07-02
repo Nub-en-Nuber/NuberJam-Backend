@@ -27,6 +27,7 @@ class Constants
         "album_id_needed" => "Album ID is required to process data",
         "music_id_needed" => "Music ID is required to process data",
         "music_and_account_id_needed" => "Music and Account ID is required to process data",
+        "music_and_playlist_id_needed" => "Music and Playlist ID is required to process data",
         "playlist_id_needed" => "Playlist ID is required to process data",
         "playlist_detail_id_needed" => "Playlist Detail ID is required to process data",
         "playlist_account_id_needed" => "Playlist and Account ID is required to process data",
@@ -43,6 +44,8 @@ class Constants
         "music_or_account_not_exist" => "Music or Account doesn't exist",
         "email_used" => "The email entered has been used",
         "username_used" => "The username entered has been used",
+        "music_exist_in_playlist" => "This music is already in playlist",
+        "music_not_exist_in_playlist" => "This music is not in playlist",
     );
     var $RESPONSE_STATUS = array(
         "success" => 200,
